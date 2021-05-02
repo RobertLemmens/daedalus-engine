@@ -1,19 +1,12 @@
 package nl.codebulb.engine;
 
-import org.lwjgl.BufferUtils;
+import nl.codebulb.engine.math.Vector4f;
+import nl.codebulb.engine.renderer.*;
 import org.lwjgl.glfw.GLFWErrorCallback;
-import org.lwjgl.opengl.GL;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.nio.FloatBuffer;
-import java.nio.file.Paths;
 
-import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
 import static org.lwjgl.glfw.GLFW.*;
-import static org.lwjgl.opengl.GL30.*;
 import static org.lwjgl.system.MemoryUtil.*;
 
 public abstract class DaedalusApplication {
@@ -21,6 +14,7 @@ public abstract class DaedalusApplication {
     // handle naar native window
     private long window;
     private DaedalusLoop daedalusLoop;
+    private RendererContext rendererContext;
 
     protected void run(DaedalusLoop daedalusLoop) {
         DaedalusOptions daedalusOptions = new DaedalusOptions(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT, Constants.TITLE);
@@ -48,17 +42,14 @@ public abstract class DaedalusApplication {
         glfwSetErrorCallback(null).free();
     }
 
-    private void init(DaedalusOptions options) {
-        DaedalusLogger.info("Initializing openGL");
-        // Setup an error callback. The default implementation
-        // will print the error message in System.err.
+    private void initGLFW(DaedalusOptions options) {
         GLFWErrorCallback.createPrint(System.err).set();
 
         // Initialize GLFW. Most GLFW functions will not work before doing this.
         if ( !glfwInit() )
             throw new IllegalStateException("Unable to initialize GLFW");
 
-        // Create the window
+        /// Create the window
         window = glfwCreateWindow(options.width(), options.height(), options.title(), NULL, NULL);
         if ( window == NULL )
             throw new RuntimeException("Failed to create the GLFW window");
@@ -68,89 +59,56 @@ public abstract class DaedalusApplication {
             if ( key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE )
                 glfwSetWindowShouldClose(window, true); // We will detect this in the rendering loop
         });
+    }
 
-        // Make the OpenGL context current
-        glfwMakeContextCurrent(window);
-        // Enable v-sync
-        glfwSwapInterval(1);
+    private void init(DaedalusOptions options) {
+        DaedalusLogger.info("Initializing Daedalus");
+
+        // Initialize window with glfw
+        initGLFW(options);
+
+        // init opengl context
+        rendererContext = RendererContext.create(window);
+        rendererContext.setVsync(true);
 
         // Make the window visible
-        glfwShowWindow(window);
+        glfwShowWindow(window); // seems to be the default, but we'll add it anyway
     }
 
     private void loop() {
-        GL.createCapabilities();
-
-        glClearColor(1.0f, 0.0f, 0.0f, 0.0f);
+        Renderer.init();
+        Renderer.setClearColor(new Vector4f(1.0f, 0.0f, 0.0f, 0.0f));
 
         Shader shader2 = new Shader("shaders/ColorShader.glsl");
         shader2.link();
 
-        // TODO take from file
-        String vertexShaderSource = """
-                #version 330 core
-                                
-                layout(location = 0) in vec2 position;
-                                
-                void main()
-                {
-                    gl_Position = vec4(position, 0.0, 1.0);
-                }
-                                
-                """;
-        String fragmentShaderSource = """
-                #version 330 core
-                                
-                out vec4 fragColor;
-                                
-                void main()
-                {
-                    fragColor = vec4(1.0);
-                }
-                           
-                """;
-//        Shader shader = new Shader(vertexShaderSource, fragmentShaderSource);
-//        shader.link();
-
         // Bind vertex array
-        int vaoID = glGenVertexArrays();
-        glBindVertexArray(vaoID);
+        VertexArray vertexArray = VertexArray.create();
 
-        // Bind vertex buffer
-        int vbo = glGenBuffers();
-        glBindBuffer(GL_ARRAY_BUFFER, vbo);
-
+        // setup vertex buffer
         float[] vertices = {
                 -0.5f, -0.5f, 0.0f,
                 0.5f, -0.5f, 0.0f,
                 0.0f,  0.5f, 0.0f};
+        VertexBuffer vertexBuffer = VertexBuffer.create(vertices);
+        vertexArray.addVertexBuffer(vertexBuffer);
 
-        FloatBuffer buffer = BufferUtils.createFloatBuffer(vertices.length);
-        buffer.put(vertices).flip();
-
-        glBufferData(GL_ARRAY_BUFFER, buffer , GL_STATIC_DRAW);
-        glEnableVertexAttribArray(0);
-        glVertexAttribPointer(0, 3, GL_FLOAT, false, 0, 0);
-
-        // Bind index buffer
-        int indexbo = glGenBuffers();
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexbo);
+        // setup index buffer
         int[] indices = {0,1,2};
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices, GL_STATIC_DRAW);
+        IndexBuffer indexBuffer = IndexBuffer.create(indices);
+        vertexArray.addIndexBuffer(indexBuffer);
 
-        glBindVertexArray(0);
         while ( !glfwWindowShouldClose(window) ) {
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
+            Renderer.clear();
             daedalusLoop.onUpdate();
+
+            Renderer.begin();
+
             shader2.bind();
-            glBindVertexArray(vaoID);
-            glEnableVertexAttribArray(0);
-            glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0);
-            glDisableVertexAttribArray(0);
-//
-            glBindVertexArray(0);
-            Shader.unbind();
-            glfwSwapBuffers(window); // swap the color buffers
+            Renderer.draw(vertexArray);
+
+            Renderer.end();
+            rendererContext.swapBuffers();
             glfwPollEvents();
         }
     }

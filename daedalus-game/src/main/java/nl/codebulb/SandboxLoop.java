@@ -14,6 +14,7 @@ public class SandboxLoop implements DaedalusLoop {
 
     @Override
     public void onUpdate() {
+
     }
 
     @Override
