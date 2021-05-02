@@ -1,12 +1,14 @@
 package nl.codebulb.engine.renderer.opengl;
 
+import nl.codebulb.engine.Shader;
+import nl.codebulb.engine.renderer.BufferElement;
 import nl.codebulb.engine.renderer.IndexBuffer;
 import nl.codebulb.engine.renderer.VertexArray;
 import nl.codebulb.engine.renderer.VertexBuffer;
 
 import static org.lwjgl.opengl.GL11.GL_FLOAT;
-import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
-import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
+import static org.lwjgl.opengl.GL11.GL_INT;
+import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
 import static org.lwjgl.opengl.GL30.glGenVertexArrays;
 
@@ -34,9 +36,15 @@ public class OpenGLVertexArray extends VertexArray {
     public void addVertexBuffer(VertexBuffer buffer) {
         bind();
         buffer.bind();
-        glEnableVertexAttribArray(0);
-        glVertexAttribPointer(0, 3, GL_FLOAT, false, 0, 0);
+        int index = 0;
+        for(BufferElement element : buffer.getLayout().getElements()) {
+            glEnableVertexAttribArray(index);
+            glVertexAttribPointer(index, element.getComponentCount(), getOpenGLType(element.datatype()), element.normalized(), buffer.getLayout().getStride(), element.offset());
+            index++;
+        }
 
+//        glEnableVertexAttribArray(0);
+//        glVertexAttribPointer(0, 3, GL_FLOAT, false, 0, 0);
         this.vertexBuffer = buffer;
     }
 
@@ -56,5 +64,14 @@ public class OpenGLVertexArray extends VertexArray {
     @Override
     public IndexBuffer getIndexBuffer() {
         return this.indexBuffer;
+    }
+
+    public static int getOpenGLType(Shader.Datatype datatype) {
+        return switch (datatype) {
+            case FLOAT, FLOAT2, FLOAT3, FLOAT4 -> GL_FLOAT;
+            case MAT3, MAT4 -> GL_FLOAT;
+            case INT, INT4, INT2, INT3 -> GL_INT;
+            case BOOL -> GL_BOOL;
+        };
     }
 }

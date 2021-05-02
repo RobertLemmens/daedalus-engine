@@ -5,6 +5,8 @@ import nl.codebulb.engine.renderer.*;
 import org.lwjgl.glfw.GLFWErrorCallback;
 
 
+import javax.xml.crypto.Data;
+
 import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.system.MemoryUtil.*;
@@ -87,10 +89,15 @@ public abstract class DaedalusApplication {
 
         // setup vertex buffer
         float[] vertices = {
-                -0.5f, -0.5f, 0.0f,
-                0.5f, -0.5f, 0.0f,
-                0.0f,  0.5f, 0.0f};
+        -0.5f, -0.5f, 0.0f, 0.8f, 0.2f, 0.8f, 1.0f,
+                0.5f, -0.5f, 0.0f, 0.2f, 0.3f, 0.8f, 1.0f,
+                0.0f, 0.5f, 0.0f, 0.8f, 0.8f, 0.2f, 1.0f
+    };
         VertexBuffer vertexBuffer = VertexBuffer.create(vertices);
+        BufferLayout vertexBufferLayout = new BufferLayout();
+        vertexBufferLayout.addElement("a_position", Shader.Datatype.FLOAT3);
+        vertexBufferLayout.addElement("a_color", Shader.Datatype.FLOAT4);
+        vertexBuffer.setLayout(vertexBufferLayout);
         vertexArray.addVertexBuffer(vertexBuffer);
 
         // setup index buffer

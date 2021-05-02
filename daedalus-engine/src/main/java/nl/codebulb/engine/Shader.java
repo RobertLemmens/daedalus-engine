@@ -6,6 +6,23 @@ import static org.lwjgl.opengl.GL20.*;
 
 public class Shader {
 
+    public enum Datatype {
+        FLOAT(4), FLOAT2(8), FLOAT3(12), FLOAT4(16),
+        MAT3(36), MAT4(48),
+        INT(4), INT2(8), INT3(12), INT4(16),
+        BOOL(1);
+
+        private final int size;
+
+        Datatype(int size) {
+            this.size = size;
+        }
+
+        public int getSize() {
+            return size;
+        }
+    }
+
     int programID;
     int vertexShaderID;
     int fragmentShaderID;

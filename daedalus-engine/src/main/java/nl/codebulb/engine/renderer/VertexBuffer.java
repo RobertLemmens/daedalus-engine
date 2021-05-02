@@ -16,4 +16,6 @@ public abstract class VertexBuffer {
     public abstract void bind();
     public abstract void unbind();
     public abstract void dispose();
+    public abstract void setLayout(BufferLayout bufferLayout);
+    public abstract BufferLayout getLayout();
 }

@@ -1,5 +1,6 @@
 package nl.codebulb.engine.renderer.opengl;
 
+import nl.codebulb.engine.renderer.BufferLayout;
 import nl.codebulb.engine.renderer.VertexBuffer;
 import org.lwjgl.BufferUtils;
 
@@ -10,6 +11,7 @@ import static org.lwjgl.opengl.GL15.*;
 public class OpenGLVertexBuffer extends VertexBuffer {
 
     private final int id;
+    private BufferLayout bufferLayout;
 
     public OpenGLVertexBuffer(float[] vertices) {
         id = glGenBuffers();
@@ -34,5 +36,15 @@ public class OpenGLVertexBuffer extends VertexBuffer {
     @Override
     public void dispose() {
         glDeleteBuffers(id);
+    }
+
+    @Override
+    public void setLayout(BufferLayout bufferLayout) {
+        this.bufferLayout = bufferLayout;
+    }
+
+    @Override
+    public BufferLayout getLayout() {
+        return bufferLayout;
     }
 }
