@@ -1,4 +1,4 @@
-package nl.codebulb.engine;
+package nl.codebulb.engine.exceptions;
 
 public class InitException extends RuntimeException{
     public InitException(String message){
