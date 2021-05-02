@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.nio.FloatBuffer;
+import java.nio.file.Paths;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL20.*;
@@ -82,9 +83,34 @@ public abstract class DaedalusApplication {
 
         glClearColor(1.0f, 0.0f, 0.0f, 0.0f);
 
-        Shader shader = new Shader();
-        shader.attachVertexShader("", "");
-        shader.link();
+        Shader shader2 = new Shader("shaders/ColorShader.glsl");
+        shader2.link();
+
+        // TODO take from file
+        String vertexShaderSource = """
+                #version 330 core
+                                
+                layout(location = 0) in vec2 position;
+                                
+                void main()
+                {
+                    gl_Position = vec4(position, 0.0, 1.0);
+                }
+                                
+                """;
+        String fragmentShaderSource = """
+                #version 330 core
+                                
+                out vec4 fragColor;
+                                
+                void main()
+                {
+                    fragColor = vec4(1.0);
+                }
+                           
+                """;
+//        Shader shader = new Shader(vertexShaderSource, fragmentShaderSource);
+//        shader.link();
 
         // Bind vertex array
         int vaoID = glGenVertexArrays();
@@ -116,7 +142,7 @@ public abstract class DaedalusApplication {
         while ( !glfwWindowShouldClose(window) ) {
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
             daedalusLoop.onUpdate();
-            shader.bind();
+            shader2.bind();
             glBindVertexArray(vaoID);
             glEnableVertexAttribArray(0);
             glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0);

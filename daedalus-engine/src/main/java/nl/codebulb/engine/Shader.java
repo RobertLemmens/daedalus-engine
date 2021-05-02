@@ -1,4 +1,6 @@
 package nl.codebulb.engine;
+import java.nio.file.Path;
+
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL20.*;
 
@@ -8,39 +10,34 @@ public class Shader {
     int vertexShaderID;
     int fragmentShaderID;
 
-    public Shader() {
+    public Shader(String shaderPath) {
         programID = glCreateProgram();
+        if(!shaderPath.endsWith(".glsl")) {
+            DaedalusLogger.error("Shader exception: Only glsl files are supported");
+        }
+        // get vertex and fragmentshader from glsl file
+        String shaderSrc = FileUtils.getResourceFileAsString(shaderPath);
+        int vsStart = shaderSrc.indexOf("// VS_BEGIN");
+        int vsEnd = shaderSrc.indexOf("// VS_END");
+        String vertexSrc = shaderSrc.substring(vsStart, vsEnd);
+        int fsStart = shaderSrc.indexOf("// FS_BEGIN");
+        int fsEnd = shaderSrc.indexOf("// FS_END");
+        String fragmentSrc = shaderSrc.substring(fsStart, fsEnd);
+        attachVertexShader(vertexSrc, fragmentSrc);
     }
 
-    public void attachVertexShader(String vertexShader, String fragmentShader)
+    public Shader(String vertexShaderSrc, String fragmentShaderSrc) {
+        programID = glCreateProgram();
+        attachVertexShader(vertexShaderSrc, fragmentShaderSrc);
+    }
+
+    private void attachVertexShader(String vertexShader, String fragmentShader)
     {
-        // TODO take from file
-        String vertexShaderSource = """
-                #version 330 core
-                                
-                layout(location = 0) in vec2 position;
-                                
-                void main()
-                {
-                    gl_Position = vec4(position, 0.0, 1.0);
-                }
-                                
-                """;
-        String fragmentShaderSource = """
-                #version 330 core
-                                
-                out vec4 fragColor;
-                                
-                void main()
-                {
-                    fragColor = vec4(1.0);
-                }
-                           
-                """;
+
 
         // Create the shader and set the source
         vertexShaderID = glCreateShader(GL_VERTEX_SHADER);
-        glShaderSource(vertexShaderID, vertexShaderSource);
+        glShaderSource(vertexShaderID, vertexShader);
 
         // Compile the shader
         glCompileShader(vertexShaderID);
@@ -54,7 +51,7 @@ public class Shader {
         glAttachShader(programID, vertexShaderID);
 
         fragmentShaderID = glCreateShader(GL_FRAGMENT_SHADER);
-        glShaderSource(fragmentShaderID, fragmentShaderSource);
+        glShaderSource(fragmentShaderID, fragmentShader);
 
         // Compile the shader
         glCompileShader(fragmentShaderID);
