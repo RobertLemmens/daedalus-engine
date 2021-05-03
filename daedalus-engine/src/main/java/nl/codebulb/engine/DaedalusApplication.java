@@ -115,11 +115,13 @@ public abstract class DaedalusApplication {
             Renderer.begin(orthographicCamera);
             Mat4f scale = Mat4f.scale(new Vec3f(0.1f));
 
-            for (int i = 0; i < 5; i++) {
-                Mat4f transform = Mat4f.translate(new Vec3f(0.5f, (float)i * 0.11f, 0)).multiply(scale);
-                Renderer.draw(vertexArray, shader2, transform);
+            for(int y = 0; y < 20; y++) {
+                for (int x = 0; x < 20; x++) {
+                    Vec3f position = new Vec3f(x * 0.11f, y * 0.11f, 0f);
+                    Mat4f transform = Mat4f.translate(position).multiply(scale);
+                    Renderer.draw(vertexArray, shader2, transform);
+                }
             }
-
 
             Renderer.end();
             rendererContext.swapBuffers();

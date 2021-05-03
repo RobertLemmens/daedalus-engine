@@ -126,10 +126,10 @@ public record Mat4f(Vec4f col1, Vec4f col2, Vec4f col3, Vec4f col4) {
 
     public static Mat4f translate(Vec3f tv) {
         return new Mat4f(
-                new Vec4f(1, 0, tv.x() ,0),
-                new Vec4f(0, 1, tv.y(), 0),
-                new Vec4f(0, 0 ,tv.z(), 0),
-                new Vec4f(0, 0 ,0, 1)
+                new Vec4f(1, 0, 0, tv.x()),
+                new Vec4f(0, 1, 0, tv.y()),
+                new Vec4f(0, 0, 1, tv.z()),
+                new Vec4f(0, 0, 0, 1)
         );
     }
 
