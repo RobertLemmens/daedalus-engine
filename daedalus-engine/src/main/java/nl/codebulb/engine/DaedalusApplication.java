@@ -5,6 +5,7 @@ import nl.codebulb.engine.math.Vec3f;
 import nl.codebulb.engine.math.Vec4f;
 import nl.codebulb.engine.renderer.*;
 import org.lwjgl.glfw.GLFWErrorCallback;
+import org.lwjgl.glfw.GLFWKeyCallback;
 
 
 import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
