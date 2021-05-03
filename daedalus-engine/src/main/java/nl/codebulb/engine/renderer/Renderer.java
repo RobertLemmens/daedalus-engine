@@ -1,6 +1,6 @@
 package nl.codebulb.engine.renderer;
 
-import nl.codebulb.engine.math.Vector4f;
+import nl.codebulb.engine.math.Vec4f;
 
 public final class Renderer {
 
@@ -10,7 +10,7 @@ public final class Renderer {
         backend = RendererBackend.create();
     }
 
-    public static void setClearColor(Vector4f color){
+    public static void setClearColor(Vec4f color){
         backend.setClearColor(color);
     }
 

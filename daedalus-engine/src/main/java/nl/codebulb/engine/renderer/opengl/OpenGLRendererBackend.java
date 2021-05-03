@@ -1,6 +1,6 @@
 package nl.codebulb.engine.renderer.opengl;
 
-import nl.codebulb.engine.math.Vector4f;
+import nl.codebulb.engine.math.Vec4f;
 import nl.codebulb.engine.renderer.RendererBackend;
 import nl.codebulb.engine.renderer.VertexArray;
 
@@ -14,7 +14,7 @@ public class OpenGLRendererBackend extends RendererBackend {
     }
 
     @Override
-    public void setClearColor(Vector4f color) {
+    public void setClearColor(Vec4f color) {
         glClearColor(color.r(), color.g(), color.b(), color.a());
     }
 

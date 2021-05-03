@@ -1,7 +1,7 @@
 package nl.codebulb.engine.renderer;
 
 import nl.codebulb.engine.Constants;
-import nl.codebulb.engine.math.Vector4f;
+import nl.codebulb.engine.math.Vec4f;
 import nl.codebulb.engine.renderer.opengl.OpenGLRendererBackend;
 public abstract class RendererBackend {
 
@@ -19,7 +19,7 @@ public abstract class RendererBackend {
     }
 
     public abstract void drawIndexed(VertexArray vertexArray);
-    public abstract void setClearColor(Vector4f color);
+    public abstract void setClearColor(Vec4f color);
     public abstract void clear();
 
 }

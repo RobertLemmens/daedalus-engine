@@ -1,11 +1,9 @@
 package nl.codebulb.engine;
 
-import nl.codebulb.engine.math.Vector4f;
+import nl.codebulb.engine.math.Vec4f;
 import nl.codebulb.engine.renderer.*;
 import org.lwjgl.glfw.GLFWErrorCallback;
 
-
-import javax.xml.crypto.Data;
 
 import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
 import static org.lwjgl.glfw.GLFW.*;
@@ -79,7 +77,7 @@ public abstract class DaedalusApplication {
 
     private void loop() {
         Renderer.init();
-        Renderer.setClearColor(new Vector4f(1.0f, 0.0f, 0.0f, 0.0f));
+        Renderer.setClearColor(new Vec4f(0.0f, 0.0f, 0.0f, 0.0f));
 
         Shader shader2 = new Shader("shaders/ColorShader.glsl");
         shader2.link();
@@ -89,10 +87,11 @@ public abstract class DaedalusApplication {
 
         // setup vertex buffer
         float[] vertices = {
-        -0.5f, -0.5f, 0.0f, 0.8f, 0.2f, 0.8f, 1.0f,
-                0.5f, -0.5f, 0.0f, 0.2f, 0.3f, 0.8f, 1.0f,
-                0.0f, 0.5f, 0.0f, 0.8f, 0.8f, 0.2f, 1.0f
-    };
+                -0.5f, -0.5f, 0.0f, 0.8f, 0.2f, 0.8f, 1.0f,
+                 0.5f, -0.5f, 0.0f, 0.2f, 0.3f, 0.8f, 1.0f,
+                 0.5f,  0.5f, 0.0f, 0.8f, 0.8f, 0.2f, 1.0f,
+                -0.5f,  0.5f, 0.0f, 0.8f, 0.8f, 0.2f, 1.0f
+        };
         VertexBuffer vertexBuffer = VertexBuffer.create(vertices);
         BufferLayout vertexBufferLayout = new BufferLayout();
         vertexBufferLayout.addElement("a_position", Shader.Datatype.FLOAT3);
@@ -101,7 +100,7 @@ public abstract class DaedalusApplication {
         vertexArray.addVertexBuffer(vertexBuffer);
 
         // setup index buffer
-        int[] indices = {0,1,2};
+        int[] indices = {0,1,2,2,3,0};
         IndexBuffer indexBuffer = IndexBuffer.create(indices);
         vertexArray.addIndexBuffer(indexBuffer);
 
