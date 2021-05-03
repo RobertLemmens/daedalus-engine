@@ -1,5 +1,7 @@
 package nl.codebulb.engine;
 
+import nl.codebulb.engine.math.Mat4f;
+import nl.codebulb.engine.math.Vec3f;
 import nl.codebulb.engine.math.Vec4f;
 import nl.codebulb.engine.renderer.*;
 import org.lwjgl.glfw.GLFWErrorCallback;
@@ -111,9 +113,13 @@ public abstract class DaedalusApplication {
             daedalusLoop.onUpdate();
 
             Renderer.begin(orthographicCamera);
+            Mat4f scale = Mat4f.scale(new Vec3f(0.1f));
 
-            shader2.bind();
-            Renderer.draw(vertexArray, shader2);
+            for (int i = 0; i < 5; i++) {
+                Mat4f transform = Mat4f.translate(new Vec3f(0.5f, (float)i * 0.11f, 0)).multiply(scale);
+                Renderer.draw(vertexArray, shader2, transform);
+            }
+
 
             Renderer.end();
             rendererContext.swapBuffers();

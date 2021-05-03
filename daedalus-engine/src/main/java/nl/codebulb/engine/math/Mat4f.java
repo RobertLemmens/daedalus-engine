@@ -133,6 +133,14 @@ public record Mat4f(Vec4f col1, Vec4f col2, Vec4f col3, Vec4f col4) {
         );
     }
 
+    public static Mat4f scale(Vec3f sv) {
+        return new Mat4f(
+                new Vec4f(sv.x(), 0, 0 ,0),
+                new Vec4f(0, sv.y(), 0, 0),
+                new Vec4f(0, 0 ,sv.z(), 0),
+                new Vec4f(0, 0 ,0, 1));
+    }
+
     public void fillBuffer(FloatBuffer buffer) {
         buffer.put(col1.r()).put(col2.r()).put(col3.r()).put(col4.r());
         buffer.put(col1.g()).put(col2.g()).put(col3.g()).put(col4.g());

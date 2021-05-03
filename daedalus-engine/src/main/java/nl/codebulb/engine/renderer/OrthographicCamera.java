@@ -31,6 +31,7 @@ public class OrthographicCamera extends Camera {
 
     public void setPosition(Vec3f position) {
         this.position = position;
+        calculateViewMatrix();
     }
 
     public float getRotation() {
@@ -39,6 +40,7 @@ public class OrthographicCamera extends Camera {
 
     public void setRotation(float rotation) {
         this.rotation = rotation;
+        calculateViewMatrix();
     }
 
     public Mat4f getProjectionMatrix() {

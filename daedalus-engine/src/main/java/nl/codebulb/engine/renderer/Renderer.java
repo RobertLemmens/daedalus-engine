@@ -40,9 +40,10 @@ public final class Renderer {
 
     }
 
-    public static void draw(VertexArray vertexArray, Shader shader) {
+    public static void draw(VertexArray vertexArray, Shader shader, Mat4f transform) {
         shader.bind();
         shader.uploadUniformMat4("u_view_projection", viewProjectionMatrix);
+        shader.uploadUniformMat4("u_transform", transform);
 
         vertexArray.bind();
         backend.drawIndexed(vertexArray);
