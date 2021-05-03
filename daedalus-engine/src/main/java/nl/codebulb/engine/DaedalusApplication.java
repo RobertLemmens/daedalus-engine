@@ -104,14 +104,16 @@ public abstract class DaedalusApplication {
         IndexBuffer indexBuffer = IndexBuffer.create(indices);
         vertexArray.addIndexBuffer(indexBuffer);
 
+        OrthographicCamera orthographicCamera = new OrthographicCamera(-1.6f, 1.6f, -0.9f, 0.9f);
+
         while ( !glfwWindowShouldClose(window) ) {
             Renderer.clear();
             daedalusLoop.onUpdate();
 
-            Renderer.begin();
+            Renderer.begin(orthographicCamera);
 
             shader2.bind();
-            Renderer.draw(vertexArray);
+            Renderer.draw(vertexArray, shader2);
 
             Renderer.end();
             rendererContext.swapBuffers();

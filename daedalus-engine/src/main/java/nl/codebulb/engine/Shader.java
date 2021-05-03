@@ -1,4 +1,8 @@
 package nl.codebulb.engine;
+import nl.codebulb.engine.math.Mat4f;
+import org.lwjgl.BufferUtils;
+
+import java.nio.FloatBuffer;
 import java.nio.file.Path;
 
 import static org.lwjgl.opengl.GL11.*;
@@ -125,6 +129,13 @@ public class Shader {
     public int getID()
     {
         return programID;
+    }
+
+    public void uploadUniformMat4(String name, Mat4f transform) {
+        int location = glGetUniformLocation(programID, name);
+        FloatBuffer buffer = BufferUtils.createFloatBuffer(4*4);
+        transform.fillBuffer(buffer);
+        glUniformMatrix4fv(location, false, buffer);
     }
 
 }

@@ -1,5 +1,7 @@
 package nl.codebulb.engine.renderer;
 
+import nl.codebulb.engine.Shader;
+import nl.codebulb.engine.math.Mat4f;
 import nl.codebulb.engine.math.Vec4f;
 
 public final class Renderer {
@@ -18,7 +20,11 @@ public final class Renderer {
         backend.clear();
     }
 
-    public static void begin() {
+    //temp
+    private static Mat4f viewProjectionMatrix;
+
+    public static void begin(OrthographicCamera orthographicCamera) {
+        viewProjectionMatrix = orthographicCamera.getViewProjectionMatrix();
         // bind shader
 
         // bind the vertex array
@@ -34,7 +40,10 @@ public final class Renderer {
 
     }
 
-    public static void draw(VertexArray vertexArray) {
+    public static void draw(VertexArray vertexArray, Shader shader) {
+        shader.bind();
+        shader.uploadUniformMat4("u_view_projection", viewProjectionMatrix);
+
         vertexArray.bind();
         backend.drawIndexed(vertexArray);
     }
