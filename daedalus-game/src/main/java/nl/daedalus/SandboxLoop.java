@@ -1,13 +1,13 @@
 package nl.daedalus;
 
-import nl.daedalus.engine.DaedalusInput;
-import nl.daedalus.engine.DaedalusLoop;
-import nl.daedalus.engine.Shader;
+import nl.daedalus.engine.input.DaedalusInput;
+import nl.daedalus.engine.core.DaedalusLoop;
+import nl.daedalus.engine.core.Shader;
 import nl.daedalus.engine.math.Mat4f;
 import nl.daedalus.engine.math.Vec3f;
 import nl.daedalus.engine.renderer.*;
 
-import static nl.daedalus.engine.KeyCodes.*;
+import static nl.daedalus.engine.input.KeyCodes.*;
 
 public class SandboxLoop implements DaedalusLoop {
 

@@ -1,4 +1,4 @@
-package nl.daedalus.engine;
+package nl.daedalus.engine.input;
 
 public class KeyCodes {
 

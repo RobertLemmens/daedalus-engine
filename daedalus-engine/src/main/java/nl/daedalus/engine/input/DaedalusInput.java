@@ -1,4 +1,6 @@
-package nl.daedalus.engine;
+package nl.daedalus.engine.input;
+
+import nl.daedalus.engine.core.DaedalusApplication;
 
 import static org.lwjgl.glfw.GLFW.*;
 

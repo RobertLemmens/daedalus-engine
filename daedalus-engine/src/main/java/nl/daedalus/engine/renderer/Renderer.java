@@ -1,6 +1,6 @@
 package nl.daedalus.engine.renderer;
 
-import nl.daedalus.engine.Shader;
+import nl.daedalus.engine.core.Shader;
 import nl.daedalus.engine.math.Mat4f;
 import nl.daedalus.engine.math.Vec4f;
 

@@ -1,6 +1,6 @@
 package nl.daedalus.engine.renderer;
 
-import nl.daedalus.engine.Constants;
+import nl.daedalus.engine.core.Constants;
 import nl.daedalus.engine.renderer.opengl.OpenGLVertexBuffer;
 
 public abstract class VertexBuffer {

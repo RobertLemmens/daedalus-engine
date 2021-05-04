@@ -1,4 +1,4 @@
-package nl.daedalus.engine;
+package nl.daedalus.engine.core;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

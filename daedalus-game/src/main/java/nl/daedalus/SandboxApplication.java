@@ -1,6 +1,6 @@
 package nl.daedalus;
 
-import nl.daedalus.engine.DaedalusApplication;
+import nl.daedalus.engine.core.DaedalusApplication;
 
 public class SandboxApplication extends DaedalusApplication {
 

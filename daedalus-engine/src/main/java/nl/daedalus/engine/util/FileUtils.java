@@ -1,4 +1,4 @@
-package nl.daedalus.engine;
+package nl.daedalus.engine.util;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -20,7 +20,7 @@ public final class FileUtils {
         }
     }
 
-    static String getResourceFileAsString(String fileName) {
+    public static String getResourceFileAsString(String fileName) {
         ClassLoader classLoader = ClassLoader.getSystemClassLoader();
         try (InputStream is = classLoader.getResourceAsStream(fileName)) {
             if (is == null) return null;

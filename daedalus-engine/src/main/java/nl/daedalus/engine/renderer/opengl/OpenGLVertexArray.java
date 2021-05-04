@@ -1,6 +1,6 @@
 package nl.daedalus.engine.renderer.opengl;
 
-import nl.daedalus.engine.Shader;
+import nl.daedalus.engine.core.Shader;
 import nl.daedalus.engine.renderer.BufferElement;
 import nl.daedalus.engine.renderer.IndexBuffer;
 import nl.daedalus.engine.renderer.VertexArray;

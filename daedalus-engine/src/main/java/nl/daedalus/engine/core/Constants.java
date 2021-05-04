@@ -1,4 +1,4 @@
-package nl.daedalus.engine;
+package nl.daedalus.engine.core;
 
 import nl.daedalus.engine.renderer.RendererBackend;
 

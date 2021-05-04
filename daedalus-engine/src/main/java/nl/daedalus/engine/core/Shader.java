@@ -1,4 +1,5 @@
-package nl.daedalus.engine;
+package nl.daedalus.engine.core;
+import nl.daedalus.engine.util.FileUtils;
 import nl.daedalus.engine.math.Mat4f;
 import org.lwjgl.BufferUtils;
 

@@ -1,6 +1,6 @@
 package nl.daedalus.engine.renderer.opengl;
 
-import nl.daedalus.engine.DaedalusLogger;
+import nl.daedalus.engine.core.DaedalusLogger;
 import nl.daedalus.engine.renderer.RendererContext;
 import org.lwjgl.opengl.GL;
 
