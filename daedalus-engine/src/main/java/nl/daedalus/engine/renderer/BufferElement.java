@@ -1,7 +1,5 @@
 package nl.daedalus.engine.renderer;
 
-import nl.daedalus.engine.core.Shader;
-
 public record BufferElement(String name, Shader.Datatype datatype, int size, int offset, boolean normalized) {
 
     public int getComponentCount() {

@@ -1,7 +1,5 @@
 package nl.daedalus.engine.renderer;
 
-import nl.daedalus.engine.core.Shader;
-
 import java.util.ArrayList;
 import java.util.List;
 

@@ -8,6 +8,11 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class OpenGLRendererBackend extends RendererBackend {
 
+    public OpenGLRendererBackend() {
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    }
+
     @Override
     public void drawIndexed(VertexArray vertexArray) {
         glDrawElements(GL_TRIANGLES, vertexArray.getIndexBuffer().getCount(), GL_UNSIGNED_INT, 0);

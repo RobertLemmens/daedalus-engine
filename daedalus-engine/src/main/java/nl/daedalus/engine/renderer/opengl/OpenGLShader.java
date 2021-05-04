@@ -1,37 +1,24 @@
-package nl.daedalus.engine.core;
-import nl.daedalus.engine.util.FileUtils;
+package nl.daedalus.engine.renderer.opengl;
+
+import nl.daedalus.engine.core.DaedalusLogger;
 import nl.daedalus.engine.math.Mat4f;
+import nl.daedalus.engine.renderer.Shader;
+import nl.daedalus.engine.util.FileUtils;
 import org.lwjgl.BufferUtils;
 
 import java.nio.FloatBuffer;
 
-import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL11.GL_FALSE;
 import static org.lwjgl.opengl.GL20.*;
 
-public class Shader {
+public class OpenGLShader extends Shader {
 
-    public enum Datatype {
-        FLOAT(4), FLOAT2(8), FLOAT3(12), FLOAT4(16),
-        MAT3(36), MAT4(48),
-        INT(4), INT2(8), INT3(12), INT4(16),
-        BOOL(1);
-
-        private final int size;
-
-        Datatype(int size) {
-            this.size = size;
-        }
-
-        public int getSize() {
-            return size;
-        }
-    }
 
     int programID;
     int vertexShaderID;
     int fragmentShaderID;
 
-    public Shader(String shaderPath) {
+    public OpenGLShader(String shaderPath) {
         programID = glCreateProgram();
         if(!shaderPath.endsWith(".glsl")) {
             DaedalusLogger.error("Shader exception: Only glsl files are supported");
@@ -47,7 +34,7 @@ public class Shader {
         attachVertexShader(vertexSrc, fragmentSrc);
     }
 
-    public Shader(String vertexShaderSrc, String fragmentShaderSrc) {
+    public OpenGLShader(String vertexShaderSrc, String fragmentShaderSrc) {
         programID = glCreateProgram();
         attachVertexShader(vertexShaderSrc, fragmentShaderSrc);
     }
@@ -131,11 +118,11 @@ public class Shader {
         return programID;
     }
 
+    @Override
     public void uploadUniformMat4(String name, Mat4f transform) {
         int location = glGetUniformLocation(programID, name);
         FloatBuffer buffer = BufferUtils.createFloatBuffer(4*4);
         transform.fillBuffer(buffer);
         glUniformMatrix4fv(location, false, buffer);
     }
-
 }

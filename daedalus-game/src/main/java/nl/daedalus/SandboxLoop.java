@@ -2,7 +2,7 @@ package nl.daedalus;
 
 import nl.daedalus.engine.input.DaedalusInput;
 import nl.daedalus.engine.core.DaedalusLoop;
-import nl.daedalus.engine.core.Shader;
+import nl.daedalus.engine.renderer.Shader;
 import nl.daedalus.engine.math.Mat4f;
 import nl.daedalus.engine.math.Vec3f;
 import nl.daedalus.engine.renderer.*;
@@ -21,7 +21,7 @@ public class SandboxLoop implements DaedalusLoop {
         orthographicCamera = new OrthographicCamera(-1.6f, 1.6f, -0.9f, 0.9f);
         cameraPosition = new Vec3f(1.0f);
 
-        shader = new Shader("shaders/ColorShader.glsl");
+        shader = Shader.create("shaders/ColorShader.glsl");
         shader.link();
 
         // Bind vertex array
