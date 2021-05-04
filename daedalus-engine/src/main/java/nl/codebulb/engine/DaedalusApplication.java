@@ -38,6 +38,8 @@ public abstract class DaedalusApplication {
         init(options);
         loop();
 
+        // maybe clean up other stuff aswell
+
         glfwFreeCallbacks(window);
         glfwDestroyWindow(window);
 
