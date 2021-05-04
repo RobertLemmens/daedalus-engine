@@ -15,7 +15,7 @@ import static org.lwjgl.system.MemoryUtil.*;
 public abstract class DaedalusApplication {
 
     // handle naar native window
-    private long window;
+    private static long window;
     private DaedalusLoop daedalusLoop;
     private RendererContext rendererContext;
 
@@ -110,11 +110,23 @@ public abstract class DaedalusApplication {
         vertexArray.addIndexBuffer(indexBuffer);
 
         OrthographicCamera orthographicCamera = new OrthographicCamera(-1.6f, 1.6f, -0.9f, 0.9f);
-
+        Vec3f cameraPosition = new Vec3f(1.0f);
         while ( !glfwWindowShouldClose(window) ) {
             Renderer.clear();
             daedalusLoop.onUpdate();
 
+            if (DaedalusInput.isKeyPressed(GLFW_KEY_UP) || DaedalusInput.isKeyPressed(GLFW_KEY_W)) {
+                cameraPosition = cameraPosition.addY(0.1f);
+            } else if (DaedalusInput.isKeyPressed(GLFW_KEY_DOWN) || DaedalusInput.isKeyPressed(GLFW_KEY_S)) {
+                cameraPosition = cameraPosition.subtractY(0.1f);
+            }
+            if (DaedalusInput.isKeyPressed(GLFW_KEY_LEFT) || DaedalusInput.isKeyPressed(GLFW_KEY_A)) {
+                cameraPosition = cameraPosition.subtractX(0.1f);
+            } else if (DaedalusInput.isKeyPressed(GLFW_KEY_RIGHT) || DaedalusInput.isKeyPressed(GLFW_KEY_D)) {
+                cameraPosition = cameraPosition.addX(0.1f);
+            }
+
+            orthographicCamera.setPosition(cameraPosition);
             Renderer.begin(orthographicCamera);
             Mat4f scale = Mat4f.scale(new Vec3f(0.1f));
 
@@ -130,6 +142,10 @@ public abstract class DaedalusApplication {
             rendererContext.swapBuffers();
             glfwPollEvents();
         }
+    }
+
+    public static long getWindow() {
+        return window;
     }
 
 }
