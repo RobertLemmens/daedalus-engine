@@ -71,6 +71,8 @@ public class OpenGLShader extends Shader {
 
         // Attach the shader
         glAttachShader(programID, fragmentShaderID);
+
+        link();
     }
 
     public void bind()
@@ -94,6 +96,14 @@ public class OpenGLShader extends Shader {
         // Check for linking errors
         if (glGetProgrami(programID, GL_LINK_STATUS) == GL_FALSE)
             throw new RuntimeException("Unable to link shader program:");
+
+        // Detach the shaders
+        glDetachShader(programID, vertexShaderID);
+        glDetachShader(programID, fragmentShaderID);
+
+        // Delete the shaders
+        glDeleteShader(vertexShaderID);
+        glDeleteShader(fragmentShaderID);
     }
 
     public void dispose()

@@ -14,7 +14,10 @@ public class SandboxLoop implements DaedalusLoop {
     private OrthographicCamera orthographicCamera;
     private Vec3f cameraPosition;
     private VertexArray vertexArray;
+    private VertexArray squareVertexArray;
     private Shader shader;
+    private Shader textureShader;
+    private Texture checkerboard;
 
     @Override
     public void onInit() {
@@ -22,11 +25,11 @@ public class SandboxLoop implements DaedalusLoop {
         cameraPosition = new Vec3f(1.0f);
 
         shader = Shader.create("shaders/ColorShader.glsl");
-        shader.link();
+        textureShader = Shader.create("shaders/Texture.glsl");
+        checkerboard = Texture.create("textures/Checkerboard.png");
 
         // Bind vertex array
         vertexArray = VertexArray.create();
-
         // setup vertex buffer
         float[] vertices = {
                 -0.5f, -0.5f, 0.0f, 0.8f, 0.2f, 0.8f, 1.0f,
@@ -45,6 +48,30 @@ public class SandboxLoop implements DaedalusLoop {
         int[] indices = {0,1,2,2,3,0};
         IndexBuffer indexBuffer = IndexBuffer.create(indices);
         vertexArray.addIndexBuffer(indexBuffer);
+
+
+
+
+
+        // setup square with texcoords
+        float[] squareVertices = {
+                -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
+                0.5f, -0.5f, 0.0f,  1.0f, 0.0f,
+                0.5f,  0.5f, 0.0f,  1.0f, 1.0f,
+                -0.5f,  0.5f, 0.0f, 0.0f, 1.0f,
+        };
+        squareVertexArray = VertexArray.create();
+        VertexBuffer squareVertexBuffer = VertexBuffer.create(squareVertices);
+        BufferLayout squareLayout = new BufferLayout();
+        squareLayout.addElement("a_position", Shader.Datatype.FLOAT3);
+        squareLayout.addElement("a_texcoords", Shader.Datatype.FLOAT2);
+        squareVertexBuffer.setLayout(squareLayout);
+        squareVertexArray.addVertexBuffer(squareVertexBuffer);
+        // setup square index buffer
+        int[] squareIndices = {0,1,2,2,3,0};
+        IndexBuffer squareIndexBuffer = IndexBuffer.create(squareIndices);
+        squareVertexArray.addIndexBuffer(squareIndexBuffer);
+
     }
 
     @Override
@@ -71,6 +98,9 @@ public class SandboxLoop implements DaedalusLoop {
                 Renderer.draw(vertexArray, shader, transform);
             }
         }
+
+        checkerboard.bind(0);
+        Renderer.draw(squareVertexArray, textureShader, new Mat4f());
 
         Renderer.end();
     }
