@@ -76,69 +76,22 @@ public abstract class DaedalusApplication {
         rendererContext = RendererContext.create(window);
         rendererContext.setVsync(true);
 
+        // Init daedalus loop
+        daedalusLoop.onInit();
+
         // Make the window visible
         glfwShowWindow(window); // seems to be the default, but we'll add it anyway
     }
 
     private void loop() {
         Renderer.init();
-        Renderer.setClearColor(new Vec4f(0.0f, 0.0f, 0.0f, 0.0f));
+        Renderer.setClearColor(new Vec4f(0.2f, 0.2f, 0.2f, 0.0f));
 
-        Shader shader2 = new Shader("shaders/ColorShader.glsl");
-        shader2.link();
-
-        // Bind vertex array
-        VertexArray vertexArray = VertexArray.create();
-
-        // setup vertex buffer
-        float[] vertices = {
-                -0.5f, -0.5f, 0.0f, 0.8f, 0.2f, 0.8f, 1.0f,
-                 0.5f, -0.5f, 0.0f, 0.2f, 0.3f, 0.8f, 1.0f,
-                 0.5f,  0.5f, 0.0f, 0.8f, 0.8f, 0.2f, 1.0f,
-                -0.5f,  0.5f, 0.0f, 0.8f, 0.8f, 0.2f, 1.0f
-        };
-        VertexBuffer vertexBuffer = VertexBuffer.create(vertices);
-        BufferLayout vertexBufferLayout = new BufferLayout();
-        vertexBufferLayout.addElement("a_position", Shader.Datatype.FLOAT3);
-        vertexBufferLayout.addElement("a_color", Shader.Datatype.FLOAT4);
-        vertexBuffer.setLayout(vertexBufferLayout);
-        vertexArray.addVertexBuffer(vertexBuffer);
-
-        // setup index buffer
-        int[] indices = {0,1,2,2,3,0};
-        IndexBuffer indexBuffer = IndexBuffer.create(indices);
-        vertexArray.addIndexBuffer(indexBuffer);
-
-        OrthographicCamera orthographicCamera = new OrthographicCamera(-1.6f, 1.6f, -0.9f, 0.9f);
-        Vec3f cameraPosition = new Vec3f(1.0f);
         while ( !glfwWindowShouldClose(window) ) {
             Renderer.clear();
+
             daedalusLoop.onUpdate();
 
-            if (DaedalusInput.isKeyPressed(GLFW_KEY_UP) || DaedalusInput.isKeyPressed(GLFW_KEY_W)) {
-                cameraPosition = cameraPosition.addY(0.1f);
-            } else if (DaedalusInput.isKeyPressed(GLFW_KEY_DOWN) || DaedalusInput.isKeyPressed(GLFW_KEY_S)) {
-                cameraPosition = cameraPosition.subtractY(0.1f);
-            }
-            if (DaedalusInput.isKeyPressed(GLFW_KEY_LEFT) || DaedalusInput.isKeyPressed(GLFW_KEY_A)) {
-                cameraPosition = cameraPosition.subtractX(0.1f);
-            } else if (DaedalusInput.isKeyPressed(GLFW_KEY_RIGHT) || DaedalusInput.isKeyPressed(GLFW_KEY_D)) {
-                cameraPosition = cameraPosition.addX(0.1f);
-            }
-
-            orthographicCamera.setPosition(cameraPosition);
-            Renderer.begin(orthographicCamera);
-            Mat4f scale = Mat4f.scale(new Vec3f(0.1f));
-
-            for(int y = 0; y < 20; y++) {
-                for (int x = 0; x < 20; x++) {
-                    Vec3f position = new Vec3f(x * 0.11f, y * 0.11f, 0f);
-                    Mat4f transform = Mat4f.translate(position).multiply(scale);
-                    Renderer.draw(vertexArray, shader2, transform);
-                }
-            }
-
-            Renderer.end();
             rendererContext.swapBuffers();
             glfwPollEvents();
         }
