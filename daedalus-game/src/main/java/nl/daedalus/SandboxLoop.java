@@ -75,7 +75,7 @@ public class SandboxLoop implements DaedalusLoop {
     }
 
     @Override
-    public void onUpdate() {
+    public void onUpdate(float dt) {
         if (DaedalusInput.isKeyPressed(DAE_KEY_UP) || DaedalusInput.isKeyPressed(DAE_KEY_W)) {
             cameraPosition = cameraPosition.addY(0.1f);
         } else if (DaedalusInput.isKeyPressed(DAE_KEY_DOWN) || DaedalusInput.isKeyPressed(DAE_KEY_S)) {

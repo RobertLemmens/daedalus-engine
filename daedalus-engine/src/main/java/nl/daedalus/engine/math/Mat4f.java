@@ -4,12 +4,8 @@ import java.nio.FloatBuffer;
 
 public record Mat4f(Vec4f col1, Vec4f col2, Vec4f col3, Vec4f col4) {
 
-    /*
-        [ 1, 0, 0, 0
-          0, 1, 0, 0
-          0, 0, 1, 0
-          0, 0, 0, 1 ]
-     */
+
+    // We initialize matrices as identity
     public Mat4f() {
         this(
                 new Vec4f(1, 0, 0 ,0),
@@ -247,6 +243,12 @@ public record Mat4f(Vec4f col1, Vec4f col2, Vec4f col3, Vec4f col4) {
         );
     }
 
+    /**
+     * Translates with an identity matrix
+     *
+     * @param tv
+     * @return
+     */
     public static Mat4f translate(Vec3f tv) {
         return new Mat4f(
                 new Vec4f(1, 0, 0, tv.x()),

@@ -1,6 +1,7 @@
 package nl.daedalus.engine.renderer;
 
 import nl.daedalus.engine.math.Mat4f;
+import nl.daedalus.engine.math.Vec3f;
 import nl.daedalus.engine.math.Vec4f;
 
 public final class Renderer {
@@ -34,7 +35,7 @@ public final class Renderer {
 
     }
 
-    public static void drawQuad() {
+    public static void drawQuad(Vec3f position, Mat4f scale, float rotation, Vec4f color) {
         // update the quads
 
     }

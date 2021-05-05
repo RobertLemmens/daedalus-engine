@@ -84,10 +84,15 @@ public abstract class DaedalusApplication {
         Renderer.init();
         Renderer.setClearColor(new Vec4f(0.2f, 0.2f, 0.2f, 0.0f));
 
+        float lastTimeFrame = 0;
         while ( !glfwWindowShouldClose(window) ) {
+            float time = (float)glfwGetTime(); //TODO temp
+            float currentTime = time - lastTimeFrame;
+            lastTimeFrame = time;
+
             Renderer.clear();
 
-            daedalusLoop.onUpdate();
+            daedalusLoop.onUpdate(currentTime);
 
             rendererContext.swapBuffers();
             glfwPollEvents();
