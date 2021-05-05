@@ -1,7 +1,7 @@
 # Daedalus engine
 ### 2D Java game engine
 
-The engine is still in its early stages, but capable of making basic gameloops already.
+The engine is still in its early stages, but capable of making basic gameloops already. See daedalus-game module for an example. I play around in there during development.
 
 1. Create a gameloop by implementing DaedalusLoop:
 
