@@ -1,18 +1,16 @@
 package nl.daedalus;
 
-import nl.daedalus.engine.input.DaedalusInput;
+import nl.daedalus.engine.core.Constants;
 import nl.daedalus.engine.core.DaedalusLoop;
 import nl.daedalus.engine.renderer.Shader;
 import nl.daedalus.engine.math.Mat4f;
 import nl.daedalus.engine.math.Vec3f;
 import nl.daedalus.engine.renderer.*;
-
-import static nl.daedalus.engine.input.KeyCodes.*;
+import nl.daedalus.engine.renderer.camera.OrthographicCameraController;
 
 public class SandboxLoop implements DaedalusLoop {
 
-    private OrthographicCamera orthographicCamera;
-    private Vec3f cameraPosition;
+    private OrthographicCameraController cameraController;
     private VertexArray vertexArray;
     private VertexArray squareVertexArray;
     private Shader shader;
@@ -21,8 +19,8 @@ public class SandboxLoop implements DaedalusLoop {
 
     @Override
     public void onInit() {
-        orthographicCamera = new OrthographicCamera(-1.6f, 1.6f, -0.9f, 0.9f);
-        cameraPosition = new Vec3f(1.0f);
+
+        cameraController = new OrthographicCameraController((float)Constants.WINDOW_WIDTH / (float)Constants.WINDOW_HEIGHT, true);
 
         shader = Shader.create("shaders/ColorShader.glsl");
         textureShader = Shader.create("shaders/Texture.glsl");
@@ -76,19 +74,10 @@ public class SandboxLoop implements DaedalusLoop {
 
     @Override
     public void onUpdate(float dt) {
-        if (DaedalusInput.isKeyPressed(DAE_KEY_UP) || DaedalusInput.isKeyPressed(DAE_KEY_W)) {
-            cameraPosition = cameraPosition.addY(0.1f);
-        } else if (DaedalusInput.isKeyPressed(DAE_KEY_DOWN) || DaedalusInput.isKeyPressed(DAE_KEY_S)) {
-            cameraPosition = cameraPosition.subtractY(0.1f);
-        }
-        if (DaedalusInput.isKeyPressed(DAE_KEY_LEFT) || DaedalusInput.isKeyPressed(DAE_KEY_A)) {
-            cameraPosition = cameraPosition.subtractX(0.1f);
-        } else if (DaedalusInput.isKeyPressed(DAE_KEY_RIGHT) || DaedalusInput.isKeyPressed(DAE_KEY_D)) {
-            cameraPosition = cameraPosition.addX(0.1f);
-        }
 
-        orthographicCamera.setPosition(cameraPosition);
-        Renderer.begin(orthographicCamera);
+        cameraController.onUpdate(dt);
+
+        Renderer.begin(cameraController.getCamera());
         Mat4f scale = Mat4f.scale(new Vec3f(0.1f));
 
         for(int y = 0; y < 20; y++) {

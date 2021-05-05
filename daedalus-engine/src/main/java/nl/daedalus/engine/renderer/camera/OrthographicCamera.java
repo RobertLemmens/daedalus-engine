@@ -1,4 +1,4 @@
-package nl.daedalus.engine.renderer;
+package nl.daedalus.engine.renderer.camera;
 
 import nl.daedalus.engine.math.Mat4f;
 import nl.daedalus.engine.math.Vec3f;

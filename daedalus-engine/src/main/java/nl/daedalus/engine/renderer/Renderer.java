@@ -3,6 +3,7 @@ package nl.daedalus.engine.renderer;
 import nl.daedalus.engine.math.Mat4f;
 import nl.daedalus.engine.math.Vec3f;
 import nl.daedalus.engine.math.Vec4f;
+import nl.daedalus.engine.renderer.camera.OrthographicCamera;
 
 public final class Renderer {
 
