@@ -35,7 +35,7 @@ public class SandboxLoop implements DaedalusLoop {
 
 ```
 
-2. Initialize the engine in main by extending DaedalusApplication and calling run: 
+2. Initialize the engine in main by extending DaedalusApplication and calling run, passing it your loop class: 
 
 ```java
 public class SandboxApplication extends DaedalusApplication {
