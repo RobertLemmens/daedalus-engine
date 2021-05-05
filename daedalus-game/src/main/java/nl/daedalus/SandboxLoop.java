@@ -47,29 +47,6 @@ public class SandboxLoop implements DaedalusLoop {
         IndexBuffer indexBuffer = IndexBuffer.create(indices);
         vertexArray.addIndexBuffer(indexBuffer);
 
-
-
-
-
-        // setup square with texcoords
-        float[] squareVertices = {
-                -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
-                0.5f, -0.5f, 0.0f,  1.0f, 0.0f,
-                0.5f,  0.5f, 0.0f,  1.0f, 1.0f,
-                -0.5f,  0.5f, 0.0f, 0.0f, 1.0f,
-        };
-        squareVertexArray = VertexArray.create();
-        VertexBuffer squareVertexBuffer = VertexBuffer.create(squareVertices);
-        BufferLayout squareLayout = new BufferLayout();
-        squareLayout.addElement("a_position", Shader.Datatype.FLOAT3);
-        squareLayout.addElement("a_texcoords", Shader.Datatype.FLOAT2);
-        squareVertexBuffer.setLayout(squareLayout);
-        squareVertexArray.addVertexBuffer(squareVertexBuffer);
-        // setup square index buffer
-        int[] squareIndices = {0,1,2,2,3,0};
-        IndexBuffer squareIndexBuffer = IndexBuffer.create(squareIndices);
-        squareVertexArray.addIndexBuffer(squareIndexBuffer);
-
     }
 
     @Override
@@ -78,18 +55,16 @@ public class SandboxLoop implements DaedalusLoop {
         cameraController.onUpdate(dt);
 
         Renderer.begin(cameraController.getCamera());
-        Mat4f scale = Mat4f.scale(new Vec3f(0.1f));
 
         for(int y = 0; y < 20; y++) {
             for (int x = 0; x < 20; x++) {
                 Vec3f position = new Vec3f(x * 0.11f, y * 0.11f, 0f);
-                Mat4f transform = Mat4f.translate(position).multiply(scale);
-                Renderer.draw(vertexArray, shader, transform);
+                Mat4f transform = Mat4f.translate(position).multiply(Mat4f.scale(new Vec3f(0.1f)));
+                Renderer.drawQuad(vertexArray, shader, transform);
             }
         }
 
-        checkerboard.bind(0);
-        Renderer.draw(squareVertexArray, textureShader, new Mat4f());
+        Renderer.drawQuad(0.0f, 0.0f, Mat4f.scale(new Vec3f(0.5f)), 45, checkerboard);
 
         Renderer.end();
     }
