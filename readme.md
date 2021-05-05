@@ -3,7 +3,7 @@
 
 The engine is still in its early stages, but capable of making basic gameloops already.
 
-1. Create a gameloop by extending DaedalusLoop:
+1. Create a gameloop by implementing DaedalusLoop:
 
 ```java
 public class SandboxLoop implements DaedalusLoop {
