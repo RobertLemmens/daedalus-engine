@@ -76,6 +76,16 @@ public final class Renderer {
         backend.drawIndexed(renderData.getVertexArray());
     }
 
+//    public static void drawQuad(Vec3f position, Mat4f scale, float rotation, Vec4f color) {
+//        renderData.getShader().bind();
+//        texture.bind(0);
+//        Mat4f transform = Mat4f.translate(position).multiply(scale);
+//        renderData.getShader().uploadUniformMat4("u_transform", transform);
+//
+//        renderData.getVertexArray().bind();
+//        backend.drawIndexed(renderData.getVertexArray());
+//    }
+
     public static void drawQuad(VertexArray vertexArray, Shader shader, Mat4f transform) {
         shader.bind();
         shader.uploadUniformMat4("u_view_projection", viewProjectionMatrix);
