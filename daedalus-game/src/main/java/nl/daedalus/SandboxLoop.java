@@ -1,6 +1,7 @@
 package nl.daedalus;
 
 import nl.daedalus.engine.core.Constants;
+import nl.daedalus.engine.core.DaedalusLogger;
 import nl.daedalus.engine.core.DaedalusLoop;
 import nl.daedalus.engine.renderer.Shader;
 import nl.daedalus.engine.math.Mat4f;

@@ -71,7 +71,7 @@ public abstract class DaedalusApplication {
 
         // init opengl context
         rendererContext = RendererContext.create(window);
-        rendererContext.setVsync(true);
+        rendererContext.setVsync(Constants.VSYNC);
 
         // Init daedalus loop
         daedalusLoop.onInit();

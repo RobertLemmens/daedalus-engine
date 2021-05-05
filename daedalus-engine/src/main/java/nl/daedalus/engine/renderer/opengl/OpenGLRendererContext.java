@@ -33,7 +33,7 @@ public class OpenGLRendererContext extends RendererContext {
 
     @Override
     public void setVsync(boolean vsync) {
-        glfwSwapInterval(1);
+        glfwSwapInterval(vsync ? 1 : 0);
     }
 
     @Override
