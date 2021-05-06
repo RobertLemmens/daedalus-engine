@@ -1,5 +1,6 @@
 package nl.daedalus.engine.renderer;
 
+import nl.daedalus.engine.events.WindowResizeEvent;
 import nl.daedalus.engine.math.Mat4f;
 import nl.daedalus.engine.math.Vec3f;
 import nl.daedalus.engine.math.Vec4f;
@@ -63,9 +64,9 @@ public final class Renderer {
     }
 
     public static void drawQuad(float x, float y, Mat4f scale, float rotation, Texture texture) {
-        // update the quads
         drawQuad(new Vec3f(x, y, 0.0f), scale, rotation, texture);
     }
+
     public static void drawQuad(Vec3f position, Mat4f scale, float rotation, Texture texture) {
         renderData.getShader().bind();
         texture.bind(0);
@@ -93,6 +94,10 @@ public final class Renderer {
 
         vertexArray.bind();
         backend.drawIndexed(vertexArray);
+    }
+
+    public static void onWindowResize(WindowResizeEvent e) {
+        backend.setViewport(0, 0, e.getWidth(), e.getHeight());
     }
 
 }

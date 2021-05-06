@@ -1,8 +1,11 @@
 package nl.daedalus.engine.core;
 
+import nl.daedalus.engine.events.MouseScrolledEvent;
+import nl.daedalus.engine.events.WindowResizeEvent;
 import nl.daedalus.engine.math.Vec4f;
 import nl.daedalus.engine.renderer.*;
 import org.lwjgl.glfw.GLFWErrorCallback;
+import org.lwjgl.glfw.GLFWScrollCallback;
 
 
 import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
@@ -61,6 +64,17 @@ public abstract class DaedalusApplication {
             if ( key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE )
                 glfwSetWindowShouldClose(window, true); // We will detect this in the rendering loop
         });
+
+        glfwSetScrollCallback(window, (window, xoffset, yoffset) -> {
+            MouseScrolledEvent e = new MouseScrolledEvent((float)xoffset, (float)yoffset);
+            daedalusLoop.onEvent(e);
+        });
+
+        glfwSetWindowSizeCallback(window, (window, width, height) -> {
+            WindowResizeEvent e = new WindowResizeEvent(width, height);
+            daedalusLoop.onEvent(e);
+            onWindowResize(e);
+        });
     }
 
     private void init(DaedalusOptions options) {
@@ -101,6 +115,10 @@ public abstract class DaedalusApplication {
 
     public static long getWindow() {
         return window;
+    }
+
+    public void onWindowResize(WindowResizeEvent e) {
+        Renderer.onWindowResize(e);
     }
 
 }

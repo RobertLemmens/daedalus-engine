@@ -26,6 +26,11 @@ public class OrthographicCamera extends Camera {
         viewProjectionMatrix = projectionMatrix.multiply(viewMatrix);
     }
 
+    public void setProjection(float left, float right, float bottom, float top) {
+        projectionMatrix = Mat4f.ortho(left, right, bottom, top, -1.0f, 1.0f);
+        viewProjectionMatrix = projectionMatrix.multiply(viewMatrix);
+    }
+
     public Vec3f getPosition() {
         return position;
     }

@@ -1,9 +1,11 @@
 package nl.daedalus.engine.core;
 
+import nl.daedalus.engine.events.Event;
+
 public interface DaedalusLoop {
 
     void onInit();
     void onUpdate(float dt);
-    void onEvent();
+    void onEvent(Event e);
 
 }

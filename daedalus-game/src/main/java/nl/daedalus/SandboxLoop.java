@@ -3,6 +3,7 @@ package nl.daedalus;
 import nl.daedalus.engine.core.Constants;
 import nl.daedalus.engine.core.DaedalusLogger;
 import nl.daedalus.engine.core.DaedalusLoop;
+import nl.daedalus.engine.events.Event;
 import nl.daedalus.engine.renderer.Shader;
 import nl.daedalus.engine.math.Mat4f;
 import nl.daedalus.engine.math.Vec3f;
@@ -57,13 +58,13 @@ public class SandboxLoop implements DaedalusLoop {
 
         Renderer.begin(cameraController.getCamera());
 
-//        for(int y = 0; y < 20; y++) {
-//            for (int x = 0; x < 20; x++) {
-//                Vec3f position = new Vec3f(x * 0.11f, y * 0.11f, 0f);
-//                Mat4f transform = Mat4f.translate(position).multiply(Mat4f.scale(new Vec3f(0.1f)));
-//                Renderer.drawQuad(vertexArray, shader, transform);
-//            }
-//        }
+        for(int y = 0; y < 20; y++) {
+            for (int x = 0; x < 20; x++) {
+                Vec3f position = new Vec3f(x * 0.11f, y * 0.11f, 0f);
+                Mat4f transform = Mat4f.translate(position).multiply(Mat4f.scale(new Vec3f(0.1f)));
+                Renderer.drawQuad(vertexArray, shader, transform);
+            }
+        }
 
         Renderer.drawQuad(0.0f, 0.0f, Mat4f.scale(new Vec3f(0.5f)), 45, checkerboard);
 
@@ -71,7 +72,7 @@ public class SandboxLoop implements DaedalusLoop {
     }
 
     @Override
-    public void onEvent() {
-
+    public void onEvent(Event e) {
+        cameraController.onEvent(e);
     }
 }
