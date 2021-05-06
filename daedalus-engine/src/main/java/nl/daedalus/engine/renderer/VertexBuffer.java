@@ -3,6 +3,8 @@ package nl.daedalus.engine.renderer;
 import nl.daedalus.engine.core.Constants;
 import nl.daedalus.engine.renderer.opengl.OpenGLVertexBuffer;
 
+import java.nio.FloatBuffer;
+
 public abstract class VertexBuffer {
 
     public static VertexBuffer create(float[] vertices) {
@@ -18,4 +20,5 @@ public abstract class VertexBuffer {
     public abstract void dispose();
     public abstract void setLayout(BufferLayout bufferLayout);
     public abstract BufferLayout getLayout();
+    public abstract void setData(FloatBuffer data, int size);
 }
