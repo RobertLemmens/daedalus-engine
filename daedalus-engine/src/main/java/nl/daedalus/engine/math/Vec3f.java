@@ -1,8 +1,24 @@
 package nl.daedalus.engine.math;
 
+import org.lwjgl.BufferUtils;
+
+import java.nio.FloatBuffer;
+
 public record Vec3f(float x, float y, float z) {
     public Vec3f(float ident) {
         this(ident, ident, ident);
+    }
+
+    public FloatBuffer toBuffer() {
+        FloatBuffer buffer = BufferUtils.createFloatBuffer(3);
+        buffer.put(x);
+        buffer.put(y);
+        buffer.put(z);
+        return buffer;
+    }
+
+    public float[] asFloats() {
+        return new float[]{x, y, z};
     }
 
     public Vec3f add(Vec3f other) {

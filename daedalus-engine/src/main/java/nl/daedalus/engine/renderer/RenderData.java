@@ -11,6 +11,7 @@ public class RenderData {
     private final int maxVertices = maxQuads * 4;
     private final int maxIndices = maxQuads * 6;
     private final int maxTextureSlots = 32;
+    private int textureSlotIndex = 1;
 
     private VertexArray vertexArray;
     private Shader shader;
@@ -19,9 +20,24 @@ public class RenderData {
     private Texture[] textureSlots = new Texture[maxTextureSlots];
     private Vec4f[] quadVertexPositions = new Vec4f[4];
 
+    private int quadIndexCount = 0;
+
+    private int vertexPointer = 0;
     private QuadVertex[] quadVertexes;
 
     public RenderData() {
+    }
+
+    public int getVertexPointer() {
+        return vertexPointer;
+    }
+
+    public void setVertexPointer(int vertexPointer) {
+        this.vertexPointer = vertexPointer;
+    }
+
+    public void incrementVertexPointer() {
+        this.vertexPointer++;
     }
 
     public int getMaxQuads() {
@@ -38,6 +54,22 @@ public class RenderData {
 
     public int getMaxTextureSlots() {
         return maxTextureSlots;
+    }
+
+    public int getTextureSlotIndex() {
+        return textureSlotIndex;
+    }
+
+    public void setTextureSlotIndex(int textureSlotIndex) {
+        this.textureSlotIndex = textureSlotIndex;
+    }
+
+    public int getQuadIndexCount() {
+        return quadIndexCount;
+    }
+
+    public void setQuadIndexCount(int quadIndexCount) {
+        this.quadIndexCount = quadIndexCount;
     }
 
     public VertexArray getVertexArray() {

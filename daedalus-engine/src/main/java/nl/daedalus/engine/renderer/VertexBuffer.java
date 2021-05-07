@@ -15,6 +15,14 @@ public abstract class VertexBuffer {
         };
     }
 
+    public static VertexBuffer create(int size) {
+        return switch (Constants.BACKEND) {
+            case NONE -> null;
+            case OPENGL -> new OpenGLVertexBuffer(size);
+            case VULKAN -> null;
+        };
+    }
+
     public abstract void bind();
     public abstract void unbind();
     public abstract void dispose();

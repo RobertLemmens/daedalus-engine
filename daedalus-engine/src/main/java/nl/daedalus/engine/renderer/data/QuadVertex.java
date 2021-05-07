@@ -3,6 +3,9 @@ package nl.daedalus.engine.renderer.data;
 import nl.daedalus.engine.math.Vec2f;
 import nl.daedalus.engine.math.Vec3f;
 import nl.daedalus.engine.math.Vec4f;
+import org.lwjgl.BufferUtils;
+
+import java.nio.FloatBuffer;
 
 public class QuadVertex {
 
@@ -11,6 +14,16 @@ public class QuadVertex {
     private Vec2f texCoord;
     float texIndex;
     float tilingFactor;
+
+    public FloatBuffer toBuffer() {
+        FloatBuffer buffer = BufferUtils.createFloatBuffer(3 + 4 + 2 + 1 + 1);
+        buffer.put(position.asFloats());
+        buffer.put(color.asFloats());
+        buffer.put(texCoord.asFloats());
+        buffer.put(texIndex);
+        buffer.put(tilingFactor);
+        return buffer;
+    }
 
     public QuadVertex() {
 
