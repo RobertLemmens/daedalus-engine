@@ -16,13 +16,6 @@ public class OpenGLRendererBackend extends RendererBackend {
     @Override
     public void drawIndexed(VertexArray vertexArray) {
         glDrawElements(GL_TRIANGLES, vertexArray.getIndexBuffer().getCount(), GL_UNSIGNED_INT, 0);
-//        glBindTexture(GL_TEXTURE_2D, 0);
-    }
-
-    @Override
-    public void drawIndexed(VertexArray vertexArray, int index_count) {
-        int count = index_count > 0 ? index_count : vertexArray.getIndexBuffer().getCount();
-        glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, 0);
     }
 
     @Override

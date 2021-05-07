@@ -19,7 +19,6 @@ public abstract class RendererBackend {
     }
 
     public abstract void drawIndexed(VertexArray vertexArray);
-    public abstract void drawIndexed(VertexArray vertexArray, int index_count);
     public abstract void setClearColor(Vec4f color);
     public abstract void clear();
     public abstract void setViewport(int x, int y, int width, int height);

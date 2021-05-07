@@ -88,7 +88,6 @@ public class OpenGLShader extends Shader {
         glUseProgram(0);
     }
 
-
     public void link()
     {
         // Link this program
@@ -135,11 +134,5 @@ public class OpenGLShader extends Shader {
         FloatBuffer buffer = BufferUtils.createFloatBuffer(4*4);
         transform.fillBuffer(buffer);
         glUniformMatrix4fv(location, false, buffer);
-    }
-
-    @Override
-    public void setIntArray(String name, int[] values) {
-        int location = glGetUniformLocation(programID, name);
-        glUniform1iv(location, values);
     }
 }

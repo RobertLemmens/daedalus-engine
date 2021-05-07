@@ -71,15 +71,6 @@ public record Mat4f(Vec4f col1, Vec4f col2, Vec4f col3, Vec4f col4) {
         return new Mat4f(res1, res2, res3, res4);
     }
 
-    public Vec4f multiply(Vec4f vector) {
-        return new Vec4f(
-                col1.r() * vector.r() + col1.g() * vector.g() + col1.b() * vector.b() + col1.a() * vector.a(),
-                col2.r() * vector.r() + col2.g() * vector.g() + col2.b() * vector.b() + col2.a() * vector.a(),
-                col3.r() * vector.r() + col3.g() * vector.g() + col3.b() * vector.b() + col3.a() * vector.a(),
-                col4.r() * vector.r() + col4.g() * vector.g() + col4.b() * vector.b() + col4.a() * vector.a()
-        );
-    }
-
     public Mat4f multiply(Mat4f other) {
         Vec4f res1 = new Vec4f(
                 this.col1.r() * other.col1.r() + this.col1.g() * other.col2.r() + this.col1.b() * other.col3.r() + this.col1.a() * other.col4.r(),

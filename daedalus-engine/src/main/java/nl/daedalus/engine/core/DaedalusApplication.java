@@ -73,7 +73,7 @@ public abstract class DaedalusApplication {
         glfwSetWindowSizeCallback(window, (window, width, height) -> {
             WindowResizeEvent e = new WindowResizeEvent(width, height);
             daedalusLoop.onEvent(e);
-            onWindowResize(e); //TODO voelt nog niet goed deze chain
+            onWindowResize(e);
         });
     }
 
@@ -117,7 +117,7 @@ public abstract class DaedalusApplication {
         return window;
     }
 
-    public void onWindowResize(WindowResizeEvent e) { //TODO voelt nog niet goed deze chain
+    public void onWindowResize(WindowResizeEvent e) {
         Renderer.onWindowResize(e);
     }
 

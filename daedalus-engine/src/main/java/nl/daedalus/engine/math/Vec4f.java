@@ -8,8 +8,4 @@ public record Vec4f(float r, float g, float b, float a) {
     public float[] asFloats() {
         return new float[]{r,g,b,a};
     }
-
-    public Vec3f getVec3() {
-        return new Vec3f(r, g, b);
-    }
 }

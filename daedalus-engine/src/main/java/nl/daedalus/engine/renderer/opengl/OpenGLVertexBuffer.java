@@ -23,12 +23,6 @@ public class OpenGLVertexBuffer extends VertexBuffer {
         glBufferData(GL_ARRAY_BUFFER, buffer, GL_STATIC_DRAW);
     }
 
-    public OpenGLVertexBuffer(int size) { // dynamic buffer voor batched rendering
-        id = glGenBuffers();
-        glBindBuffer(GL_ARRAY_BUFFER, id);
-        glBufferData(GL_ARRAY_BUFFER, size, GL_DYNAMIC_DRAW);
-    }
-
     @Override
     public void bind() {
         glBindBuffer(GL_ARRAY_BUFFER, id);
@@ -52,11 +46,5 @@ public class OpenGLVertexBuffer extends VertexBuffer {
     @Override
     public BufferLayout getLayout() {
         return bufferLayout;
-    }
-
-    @Override
-    public void setData(FloatBuffer data, int size) { //TODO size in LWJGL bindings niet nodig?
-        glBindBuffer(GL_ARRAY_BUFFER, id);
-        glBufferSubData(GL_ARRAY_BUFFER, 0, data); //lijkt internal size te berekenen
     }
 }
