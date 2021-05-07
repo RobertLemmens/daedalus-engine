@@ -16,7 +16,7 @@ public class OrthographicCameraController extends CameraController{
 
     // Control parameters
     float zoomLevel = 1.0f;
-    float translationSpeed = 2.0f;
+    float translationSpeed = 5.0f;
     float rotationSpeed = 100.0f;
 
     // State
