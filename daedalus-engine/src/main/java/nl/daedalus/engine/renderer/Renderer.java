@@ -5,7 +5,7 @@ import nl.daedalus.engine.math.Mat4f;
 import nl.daedalus.engine.math.Vec3f;
 import nl.daedalus.engine.math.Vec4f;
 import nl.daedalus.engine.renderer.camera.OrthographicCamera;
-import org.lwjgl.opengl.ARBTextureEnvDot3;
+import nl.daedalus.engine.renderer.data.QuadVertex;
 
 public final class Renderer {
 
@@ -28,12 +28,18 @@ public final class Renderer {
         VertexBuffer vertexBuffer = VertexBuffer.create(vertices);
         BufferLayout layout = new BufferLayout();
         layout.addElement("a_position", Shader.Datatype.FLOAT3);
-        layout.addElement("u_texcoord", Shader.Datatype.FLOAT2);
+        layout.addElement("a_color", Shader.Datatype.FLOAT4);
+        layout.addElement("a_texcoord", Shader.Datatype.FLOAT2);
+        layout.addElement("a_texindex", Shader.Datatype.FLOAT);
+        layout.addElement("a_tilingfactor", Shader.Datatype.FLOAT);
         vertexBuffer.setLayout(layout);
         renderData.getVertexArray().addVertexBuffer(vertexBuffer);
 
-        int[] squareIndices = {0,1,2,2,3,0};
-        IndexBuffer squareIndexBuffer = IndexBuffer.create(squareIndices);
+        // init to max vertices for now
+        renderData.setQuadVertexes(new QuadVertex[renderData.getMaxVertices()]);
+
+        int[] quadIndices = {0,1,2,2,3,0};
+        IndexBuffer squareIndexBuffer = IndexBuffer.create(quadIndices);
         renderData.getVertexArray().addIndexBuffer(squareIndexBuffer);
         renderData.setShader(Shader.create("shaders/Texture.glsl"));
 
