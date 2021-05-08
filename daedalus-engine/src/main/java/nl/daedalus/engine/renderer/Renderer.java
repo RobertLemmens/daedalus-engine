@@ -104,17 +104,17 @@ public final class Renderer {
 
     public static void end() {
         // draw everything
-        float[] verts = QuadVertex.concatAll(dynamicRenderData.quadVertices[0].asFloat(),
-                dynamicRenderData.quadVertices[1].asFloat(),
-                dynamicRenderData.quadVertices[2].asFloat(),
-                dynamicRenderData.quadVertices[3].asFloat());
+//        float[] verts = QuadVertex.concatAll(dynamicRenderData.quadVertices[0].asFloat(),
+//                dynamicRenderData.quadVertices[1].asFloat(),
+//                dynamicRenderData.quadVertices[2].asFloat(),
+//                dynamicRenderData.quadVertices[3].asFloat());
         // set the data
         float[] allVerts = new float[0];
         for (int i = 0; i < dynamicRenderData.quadCount * 4; i++) { // gather all the floats
             allVerts = QuadVertex.concatAll(allVerts, dynamicRenderData.quadVertices[i].asFloat());
         }
 
-        dynamicRenderData.getVertexBuffer().setData(verts);
+        dynamicRenderData.getVertexBuffer().setData(allVerts);
         dynamicRenderData.getVertexArray().bind();
         backend.drawIndexed(dynamicRenderData.getVertexArray(), dynamicRenderData.quadIndexCount);
     }
@@ -141,11 +141,11 @@ public final class Renderer {
         };
 
         // create some quads
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0 ; i < 4; i++) {
             QuadVertex vertex = new QuadVertex(); //TODO maken we teveel garbage hier? Misschien is een default initialized quadvertex array een beter idee.
-            dynamicRenderData.quadVertices[i] = vertex; // Init
-            dynamicRenderData.quadVertices[i].setPosition(transform.multiply(dynamicRenderData.quadVertexPositions[i]));
-            dynamicRenderData.quadVertices[i].setTexCoords(texCoords[i]);
+            dynamicRenderData.quadVertices[i + (dynamicRenderData.quadCount * 4)] = vertex; // Init
+            dynamicRenderData.quadVertices[i + (dynamicRenderData.quadCount * 4)].setPosition(transform.multiply(dynamicRenderData.quadVertexPositions[i]));
+            dynamicRenderData.quadVertices[i + (dynamicRenderData.quadCount * 4)].setTexCoords(texCoords[i]);
         }
 
         dynamicRenderData.quadIndexCount += 6;
