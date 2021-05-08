@@ -11,11 +11,13 @@ public class OpenGLRendererBackend extends RendererBackend {
     public OpenGLRendererBackend() {
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        glEnable(GL_DEPTH_TEST);
     }
 
     @Override
-    public void drawIndexed(VertexArray vertexArray) {
-        glDrawElements(GL_TRIANGLES, vertexArray.getIndexBuffer().getCount(), GL_UNSIGNED_INT, 0);
+    public void drawIndexed(VertexArray vertexArray, int indexCount) {
+        int count = indexCount == 0 ? vertexArray.getIndexBuffer().getCount() : indexCount;
+        glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, 0);
     }
 
     @Override

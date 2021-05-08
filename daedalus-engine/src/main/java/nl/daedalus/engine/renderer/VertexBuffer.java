@@ -13,9 +13,18 @@ public abstract class VertexBuffer {
         };
     }
 
+    public static VertexBuffer create(int size) {
+        return switch (Constants.BACKEND) {
+            case NONE -> null;
+            case OPENGL -> new OpenGLVertexBuffer(size);
+            case VULKAN -> null;
+        };
+    }
+
     public abstract void bind();
     public abstract void unbind();
     public abstract void dispose();
     public abstract void setLayout(BufferLayout bufferLayout);
+    public abstract void setData(float[] vertices);
     public abstract BufferLayout getLayout();
 }

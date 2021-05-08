@@ -14,9 +14,7 @@ public class SandboxLoop implements DaedalusLoop {
 
     private OrthographicCameraController cameraController;
     private VertexArray vertexArray;
-    private VertexArray squareVertexArray;
     private Shader shader;
-    private Shader textureShader;
     private Texture checkerboard;
 
     @Override
@@ -25,7 +23,6 @@ public class SandboxLoop implements DaedalusLoop {
         cameraController = new OrthographicCameraController((float)Constants.WINDOW_WIDTH / (float)Constants.WINDOW_HEIGHT, true);
 
         shader = Shader.create("shaders/ColorShader.glsl");
-        textureShader = Shader.create("shaders/Texture.glsl");
         checkerboard = Texture.create("textures/Checkerboard.png");
 
         // Bind vertex array
@@ -66,7 +63,7 @@ public class SandboxLoop implements DaedalusLoop {
             }
         }
 
-        Renderer.drawQuad(0.0f, 0.0f, Mat4f.scale(new Vec3f(0.5f)), 45, checkerboard);
+        Renderer.drawQuad(-0.3f, 0.0f, Mat4f.scale(new Vec3f(0.5f)), 45, checkerboard);
 
         Renderer.end();
     }
