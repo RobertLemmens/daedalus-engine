@@ -10,51 +10,10 @@ import nl.daedalus.engine.renderer.camera.OrthographicCamera;
 public final class Renderer {
 
     private static RendererBackend backend;
-
-    private static RenderData renderData;
-
     private static RenderData dynamicRenderData;
 
     public static void init() {
         backend = RendererBackend.create();
-        renderData = new RenderData();
-        renderData.setVertexArray(VertexArray.create());
-        QuadVertex v1 = new QuadVertex();
-        v1.setPosition(new Vec4f(-1.0f, -1.0f, 1.0f, 1.0f));
-        v1.setTexCoords(new Vec2f(0.0f, 0.0f));
-        QuadVertex v2 = new QuadVertex();
-        v2.setPosition(new Vec4f(1.0f, -1.0f, 1.0f, 1.0f));
-        v2.setTexCoords(new Vec2f(1.0f, 0.0f));
-        QuadVertex v3 = new QuadVertex();
-        v3.setPosition(new Vec4f(1.0f, 1.0f, 1.0f, 1.0f));
-        v3.setTexCoords(new Vec2f(1.0f, 1.0f));
-        QuadVertex v4 = new QuadVertex();
-        v4.setPosition(new Vec4f(-1.0f, 1.0f, 1.0f, 1.0f));
-        v4.setTexCoords(new Vec2f(0.0f, 1.0f));
-
-//        float[] vertices = {
-//                -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f,
-//                 0.5f, -0.5f, 0.0f, 1.0f, 1.0f, 0.0f,
-//                 0.5f,  0.5f, 0.0f, 1.0f, 1.0f, 1.0f,
-//                -0.5f,  0.5f, 0.0f, 1.0f, 0.0f, 1.0f
-//        };
-
-//        float[] vertices = QuadVertex.concatAll(v1.asFloat(), v2.asFloat(), v3.asFloat(), v4.asFloat());
-//
-//        VertexBuffer vertexBuffer = VertexBuffer.create(vertices);
-//        BufferLayout layout = new BufferLayout();
-//        layout.addElement("a_position", Shader.Datatype.FLOAT4);
-//        layout.addElement("a_texcoord", Shader.Datatype.FLOAT2);
-//        vertexBuffer.setLayout(layout);
-//        renderData.getVertexArray().addVertexBuffer(vertexBuffer);
-//
-//        int[] squareIndices = {0,1,2,2,3,0};
-//        IndexBuffer squareIndexBuffer = IndexBuffer.create(squareIndices);
-//        renderData.getVertexArray().addIndexBuffer(squareIndexBuffer);
-//        renderData.setShader(Shader.create("shaders/Texture.glsl"));
-
-
-        /// ------------ dynamic test --------------- ///
         dynamicRenderData = new RenderData();
         dynamicRenderData.setVertexArray(VertexArray.create());
         dynamicRenderData.setVertexBuffer(VertexBuffer.create(RenderData.maxVertices *
@@ -117,13 +76,10 @@ public final class Renderer {
     }
 
     //temp
-    private static Mat4f viewProjectionMatrix;
 
     public static void begin(OrthographicCamera orthographicCamera) {
-        viewProjectionMatrix = orthographicCamera.getViewProjectionMatrix();
-
         dynamicRenderData.getShader().bind();
-        dynamicRenderData.getShader().uploadUniformMat4("u_view_projection", viewProjectionMatrix);
+        dynamicRenderData.getShader().uploadUniformMat4("u_view_projection", orthographicCamera.getViewProjectionMatrix());
 
         dynamicRenderData.quadIndexCount = 0;
         dynamicRenderData.quadCount = 0;
@@ -162,7 +118,7 @@ public final class Renderer {
                 new Vec2f(0.0f, 1.0f)
         };
 
-        int textureIndex = 0; // we beginnen op 1 met echte textures. 0 is zwart.
+        int textureIndex = 0; // we beginnen op 1 met echte textures. 0 is wit.
 
         for (int i = 0; i < dynamicRenderData.textureIndex; i++) {
             // if texture al bestaat, zet index daarop.

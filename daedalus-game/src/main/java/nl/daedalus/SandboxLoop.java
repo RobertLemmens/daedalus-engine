@@ -14,47 +14,19 @@ import nl.daedalus.engine.renderer.camera.OrthographicCameraController;
 public class SandboxLoop implements DaedalusLoop {
 
     private OrthographicCameraController cameraController;
-    private VertexArray vertexArray;
-    private Shader shader;
     private Texture checkerboard;
     private Texture transparent;
-
 
     private Vec4f noTint = new Vec4f(1.0f, 1.0f, 1.0f, 1.0f);
     private Vec4f blueTint = new Vec4f(0.0f, 0.0f, 0.9f, 1.0f);
 
     @Override
     public void onInit() {
-
         cameraController = new OrthographicCameraController((float)Constants.WINDOW_WIDTH / (float)Constants.WINDOW_HEIGHT, true);
         cameraController.setZoomLevel(1);
 
-
-        shader = Shader.create("shaders/ColorShader.glsl");
         checkerboard = Texture.create("textures/Checkerboard.png");
         transparent = Texture.create("textures/transparent.png");
-
-        // Bind vertex array
-        vertexArray = VertexArray.create();
-        // setup vertex buffer
-        float[] vertices = {
-                -0.5f, -0.5f, 0.0f, 0.8f, 0.2f, 0.8f, 1.0f,
-                0.5f, -0.5f, 0.0f, 0.2f, 0.3f, 0.8f, 1.0f,
-                0.5f,  0.5f, 0.0f, 0.8f, 0.8f, 0.2f, 1.0f,
-                -0.5f,  0.5f, 0.0f, 0.8f, 0.8f, 0.2f, 1.0f
-        };
-        VertexBuffer vertexBuffer = VertexBuffer.create(vertices);
-        BufferLayout vertexBufferLayout = new BufferLayout();
-        vertexBufferLayout.addElement("a_position", Shader.Datatype.FLOAT3);
-        vertexBufferLayout.addElement("a_color", Shader.Datatype.FLOAT4);
-        vertexBuffer.setLayout(vertexBufferLayout);
-        vertexArray.addVertexBuffer(vertexBuffer);
-
-        // setup index buffer
-        int[] indices = {0,1,2,2,3,0};
-        IndexBuffer indexBuffer = IndexBuffer.create(indices);
-        vertexArray.addIndexBuffer(indexBuffer);
-
     }
 
     @Override
@@ -64,7 +36,6 @@ public class SandboxLoop implements DaedalusLoop {
 
         Renderer.begin(cameraController.getCamera());
 
-        //TODO fix color rendering
         for(int y = -5; y < 5; y+=1) {
             for (int x = -5; x < 5; x+=1) {
                 Vec3f position = new Vec3f(x * 0.11f, y * 0.11f, 1f);
