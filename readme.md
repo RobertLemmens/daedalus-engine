@@ -3,6 +3,12 @@
 
 The engine is still in its early stages, but capable of making basic gameloops already. See daedalus-game module for an example. I play around in there during development.
 
+#### Requirements
+* Java 16+ (we use new features)
+* opengl 4.5+ compatible device
+
+#### Setup
+
 1. Create a gameloop by implementing DaedalusLoop:
 
 ```java

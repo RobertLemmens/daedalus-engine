@@ -23,12 +23,13 @@ public class SandboxLoop implements DaedalusLoop {
     @Override
     public void onInit() {
         cameraController = new OrthographicCameraController((float)Constants.WINDOW_WIDTH / (float)Constants.WINDOW_HEIGHT, true);
-        cameraController.setZoomLevel(1);
+        cameraController.setZoomLevel(5);
 
         checkerboard = Texture.create("textures/Checkerboard.png");
         transparent = Texture.create("textures/transparent.png");
     }
 
+    float rotation = 0.0f;
     @Override
     public void onUpdate(float dt) {
 
@@ -36,17 +37,22 @@ public class SandboxLoop implements DaedalusLoop {
 
         Renderer.begin(cameraController.getCamera());
 
-        for(int y = -5; y < 5; y+=1) {
-            for (int x = -5; x < 5; x+=1) {
-                Vec3f position = new Vec3f(x * 0.11f, y * 0.11f, 1f);
-                Renderer.drawQuad(position, Mat4f.scale(new Vec3f(0.1f)), new Vec4f((x + 5.0f) / 10.0f, 0.4f, (y + 5.0f) / 10.0f, 1.0f));
+        rotation += dt * 50;
+
+        for(float y = -5.0f; y < 5.0f; y+= 0.5f) {
+            for (float x = -5.0f; x < 5.0f; x+= 0.5f) {
+                Vec4f color = new Vec4f((x + 5.0f) / 10.0f, 0.4f, (y + 5.0f) / 10.0f, 1.0f);
+                if ((int)x % 2 == 0) {
+                    // draw rotated quad
+                    Renderer.drawRotatedQuad(x, y, rotation, Mat4f.scale(new Vec3f(0.45f, 0.45f, 1.0f)), color);
+                } else {
+                    Renderer.drawQuad(x, y, Mat4f.scale(new Vec3f(0.45f, 0.45f, 1.0f)), color);
+                }
             }
         }
 
-        Renderer.drawQuad(-0.3f, 0.0f, Mat4f.scale(new Vec3f(0.5f)), 45, checkerboard, 2, noTint);
-        Renderer.drawQuad(0.4f, 0.0f, Mat4f.scale(new Vec3f(0.5f)), 45, checkerboard, 1, noTint);
-        Renderer.drawQuad(0.8f, 0.5f, Mat4f.scale(new Vec3f(0.5f)), 45, checkerboard, 1, blueTint);
-        Renderer.drawQuad(new Vec3f(0.2f, 0.7f, 1.0f), Mat4f.scale(new Vec3f(0.5f)), 45, transparent, 1, noTint);
+        Renderer.drawQuad(-0.3f, 0.0f, Mat4f.scale(new Vec3f(20f)), checkerboard, 10, noTint);
+        Renderer.drawQuad(new Vec3f(0.2f, 0.7f, 1.0f), Mat4f.scale(new Vec3f(0.5f)), transparent, 1, noTint);
 
         Renderer.end();
     }

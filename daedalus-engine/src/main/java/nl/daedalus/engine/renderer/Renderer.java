@@ -104,11 +104,54 @@ public final class Renderer {
         backend.drawIndexed(dynamicRenderData.getVertexArray(), dynamicRenderData.quadIndexCount);
     }
 
-    public static void drawQuad(float x, float y, Mat4f scale, float rotation, Texture texture, int tilingFactor, Vec4f tint) {
-        drawQuad(new Vec3f(x, y, 0.0f), scale, rotation, texture, tilingFactor, tint);
+    public static void drawRotatedQuad(float x, float y, float rotation, Mat4f scale, Texture texture, int tilingFactor, Vec4f tint) {
+        drawRotatedQuad(new Vec3f(x,y, 0.0f), rotation, scale, texture, tilingFactor, tint);
     }
 
-    public static void drawQuad(Vec3f position, Mat4f scale, float rotation, Texture texture, int tilingFactor, Vec4f tint) {
+    public static void drawRotatedQuad(Vec3f position, float rotation, Mat4f scale, Texture texture, int tilingFactor, Vec4f tint) {
+        Mat4f transform = Mat4f.translate(position).multiply(Mat4f.rotate(rotation, new Vec3f(0.0f, 0.0f, 1.0f))).multiply(scale);
+
+        Vec2f[] texCoords = {
+                new Vec2f(0.0f, 0.0f),
+                new Vec2f(1.0f, 0.0f),
+                new Vec2f(1.0f, 1.0f),
+                new Vec2f(0.0f, 1.0f)
+        };
+
+        int textureIndex = 0; // we beginnen op 1 met echte textures. 0 is wit.
+
+        for (int i = 0; i < dynamicRenderData.textureIndex; i++) {
+            // if texture al bestaat, zet index daarop.
+            if (texture.equals(dynamicRenderData.textures[i])) {
+                textureIndex = i;
+            }
+        }
+
+        if (textureIndex == 0) {
+            textureIndex = dynamicRenderData.textureIndex;
+            dynamicRenderData.textures[textureIndex] = texture;
+            dynamicRenderData.textureIndex++;
+        }
+        // create some quads
+        for (int i = 0 ; i < 4; i++) {
+            QuadVertex vertex = new QuadVertex(); //TODO maken we teveel garbage hier? Misschien is een default initialized quadvertex array een beter idee.
+            dynamicRenderData.quadVertices[i + (dynamicRenderData.quadCount * 4)] = vertex; // Init
+            dynamicRenderData.quadVertices[i + (dynamicRenderData.quadCount * 4)].setPosition(transform.multiply(dynamicRenderData.quadVertexPositions[i]));
+            dynamicRenderData.quadVertices[i + (dynamicRenderData.quadCount * 4)].setTexCoords(texCoords[i]);
+            dynamicRenderData.quadVertices[i + (dynamicRenderData.quadCount * 4)].setTexIndex(textureIndex); // TODO int ipv float?
+            dynamicRenderData.quadVertices[i + (dynamicRenderData.quadCount * 4)].setTexTilingFactor(tilingFactor); // TODO int ipv float?
+            dynamicRenderData.quadVertices[i + (dynamicRenderData.quadCount * 4)].setColor(tint);
+        }
+
+        dynamicRenderData.quadIndexCount += 6;
+        dynamicRenderData.quadCount++;
+    }
+
+    public static void drawQuad(float x, float y, Mat4f scale, Texture texture, int tilingFactor, Vec4f tint) {
+        drawQuad(new Vec3f(x, y, 0.0f), scale, texture, tilingFactor, tint);
+    }
+
+    public static void drawQuad(Vec3f position, Mat4f scale, Texture texture, int tilingFactor, Vec4f tint) {
         Mat4f transform = Mat4f.translate(position).multiply(scale);
 
         Vec2f[] texCoords = {
@@ -146,6 +189,42 @@ public final class Renderer {
         dynamicRenderData.quadIndexCount += 6;
         dynamicRenderData.quadCount++;
 
+    }
+
+    public static void drawRotatedQuad(float x, float y, float rotation, Mat4f scale, Vec4f color) {
+       drawRotatedQuad(new Vec3f(x, y, 1.0f), rotation, scale, color);
+    }
+
+    public static void drawRotatedQuad(Vec3f position, float rotation, Mat4f scale, Vec4f color) {
+        Mat4f transform = Mat4f.translate(position).multiply(Mat4f.rotate(rotation, new Vec3f(0.0f, 0.0f, 1.0f))).multiply(scale);
+
+        Vec2f[] texCoords = {
+                new Vec2f(0.0f, 0.0f),
+                new Vec2f(1.0f, 0.0f),
+                new Vec2f(1.0f, 1.0f),
+                new Vec2f(0.0f, 1.0f)
+        };
+
+        int textureIndex = 0;
+        int tilingFactor = 1;
+
+        // create some quads
+        for (int i = 0 ; i < 4; i++) {
+            QuadVertex vertex = new QuadVertex(); //TODO maken we teveel garbage hier? Misschien is een default initialized quadvertex array een beter idee.
+            dynamicRenderData.quadVertices[i + (dynamicRenderData.quadCount * 4)] = vertex; // Init
+            dynamicRenderData.quadVertices[i + (dynamicRenderData.quadCount * 4)].setPosition(transform.multiply(dynamicRenderData.quadVertexPositions[i]));
+            dynamicRenderData.quadVertices[i + (dynamicRenderData.quadCount * 4)].setTexCoords(texCoords[i]);
+            dynamicRenderData.quadVertices[i + (dynamicRenderData.quadCount * 4)].setTexIndex(textureIndex); // TODO int ipv float?
+            dynamicRenderData.quadVertices[i + (dynamicRenderData.quadCount * 4)].setTexTilingFactor(tilingFactor); // TODO int ipv float?
+            dynamicRenderData.quadVertices[i + (dynamicRenderData.quadCount * 4)].setColor(color);
+        }
+
+        dynamicRenderData.quadIndexCount += 6;
+        dynamicRenderData.quadCount++;
+    }
+
+    public static void drawQuad(float x, float y, Mat4f scale, Vec4f color) {
+        drawQuad(new Vec3f(x, y, 1.0f), scale, color);
     }
 
     public static void drawQuad(Vec3f position, Mat4f scale, Vec4f color) {
