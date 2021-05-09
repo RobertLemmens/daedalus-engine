@@ -1,5 +1,6 @@
 package nl.daedalus.engine.renderer;
 
+import nl.daedalus.engine.math.Vec2f;
 import nl.daedalus.engine.math.Vec4f;
 
 public class RenderData {
@@ -16,6 +17,12 @@ public class RenderData {
 
     public Texture[] textures = new Texture[maxTextures];
 
+    public Vec2f[] defaultTexCoords = {
+            new Vec2f(0.0f, 0.0f),
+            new Vec2f(1.0f, 0.0f),
+            new Vec2f(1.0f, 1.0f),
+            new Vec2f(0.0f, 1.0f)
+    };
 
     private VertexArray vertexArray;
     private VertexBuffer vertexBuffer;

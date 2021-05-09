@@ -1,11 +1,9 @@
 package nl.daedalus;
 
 import nl.daedalus.engine.core.Constants;
-import nl.daedalus.engine.core.DaedalusLogger;
 import nl.daedalus.engine.core.DaedalusLoop;
 import nl.daedalus.engine.events.Event;
 import nl.daedalus.engine.math.Vec4f;
-import nl.daedalus.engine.renderer.Shader;
 import nl.daedalus.engine.math.Mat4f;
 import nl.daedalus.engine.math.Vec3f;
 import nl.daedalus.engine.renderer.*;
@@ -52,7 +50,6 @@ public class SandboxLoop implements DaedalusLoop {
         }
 
         Renderer.drawQuad(-0.3f, 0.0f, Mat4f.scale(new Vec3f(20f)), checkerboard, 10, noTint);
-        Renderer.drawQuad(new Vec3f(0.2f, 0.7f, 1.0f), Mat4f.scale(new Vec3f(0.5f)), transparent, 1, noTint);
 
         Renderer.end();
     }
