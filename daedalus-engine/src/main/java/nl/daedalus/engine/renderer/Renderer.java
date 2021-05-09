@@ -102,6 +102,43 @@ public final class Renderer {
         backend.drawIndexed(dynamicRenderData.getVertexArray(), dynamicRenderData.quadIndexCount);
     }
 
+    public static void drawQuad(float x, float y, Mat4f scale, SubTexture subTexture, int tilingFactor, Vec4f tint) {
+        drawQuad(new Vec3f(x, y, 0.0f), scale, subTexture, tilingFactor, tint);
+    }
+
+    /**
+     * Draw a quad with a subtexture
+     *
+     * @param position
+     * @param scale
+     * @param subTexture
+     * @param tilingFactor
+     * @param tint
+     */
+    public static void drawQuad(Vec3f position, Mat4f scale, SubTexture subTexture, int tilingFactor, Vec4f tint) {
+        Mat4f transform = Mat4f.translate(position).multiply(scale);
+
+        Texture texture = subTexture.getTexture();
+        Vec2f[] texCoords = subTexture.getTexCoords();
+
+        int textureIndex = 0; // we beginnen op 1 met echte textures. 0 is wit.
+
+        for (int i = 0; i < dynamicRenderData.textureIndex; i++) {
+            // if texture al bestaat, zet index daarop.
+            if (texture.equals(dynamicRenderData.textures[i])) {
+                textureIndex = i;
+            }
+        }
+
+        if (textureIndex == 0) {
+            textureIndex = dynamicRenderData.textureIndex;
+            dynamicRenderData.textures[textureIndex] = texture;
+            dynamicRenderData.textureIndex++;
+        }
+
+        drawQuad(transform, texCoords, textureIndex, tilingFactor, tint);
+    }
+
     public static void drawRotatedQuad(float x, float y, float rotation, Mat4f scale, Texture texture, int tilingFactor, Vec4f tint) {
         drawRotatedQuad(new Vec3f(x,y, 0.0f), rotation, scale, texture, tilingFactor, tint);
     }
