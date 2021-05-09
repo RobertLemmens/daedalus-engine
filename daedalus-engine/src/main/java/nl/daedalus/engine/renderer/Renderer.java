@@ -68,6 +68,7 @@ public final class Renderer {
         dynamicLayout.addElement("a_position", Shader.Datatype.FLOAT4);
         dynamicLayout.addElement("a_texcoord", Shader.Datatype.FLOAT2);
         dynamicLayout.addElement("a_texindex", Shader.Datatype.FLOAT);
+        dynamicLayout.addElement("a_textilingfactor", Shader.Datatype.FLOAT);
         dynamicRenderData.getVertexBuffer().setLayout(dynamicLayout);
         dynamicRenderData.getVertexArray().addVertexBuffer(dynamicRenderData.getVertexBuffer());
 
@@ -145,11 +146,11 @@ public final class Renderer {
         backend.drawIndexed(dynamicRenderData.getVertexArray(), dynamicRenderData.quadIndexCount);
     }
 
-    public static void drawQuad(float x, float y, Mat4f scale, float rotation, Texture texture) {
-        drawQuad(new Vec3f(x, y, 0.0f), scale, rotation, texture);
+    public static void drawQuad(float x, float y, Mat4f scale, float rotation, Texture texture, int tilingFactor) {
+        drawQuad(new Vec3f(x, y, 0.0f), scale, rotation, texture, tilingFactor);
     }
 
-    public static void drawQuad(Vec3f position, Mat4f scale, float rotation, Texture texture) {
+    public static void drawQuad(Vec3f position, Mat4f scale, float rotation, Texture texture, int tilingFactor) {
         Mat4f transform = Mat4f.translate(position).multiply(scale);
 
         Vec2f[] texCoords = {
@@ -160,6 +161,7 @@ public final class Renderer {
         };
 
         int textureIndex = 0; // we beginnen op 1 met echte textures. 0 is zwart.
+        int tilingfactor = tilingFactor;
 
         for (int i = 0; i < dynamicRenderData.textureIndex; i++) {
             // if texture al bestaat, zet index daarop.
@@ -180,6 +182,7 @@ public final class Renderer {
             dynamicRenderData.quadVertices[i + (dynamicRenderData.quadCount * 4)].setPosition(transform.multiply(dynamicRenderData.quadVertexPositions[i]));
             dynamicRenderData.quadVertices[i + (dynamicRenderData.quadCount * 4)].setTexCoords(texCoords[i]);
             dynamicRenderData.quadVertices[i + (dynamicRenderData.quadCount * 4)].setTexIndex(textureIndex); // TODO int ipv float?
+            dynamicRenderData.quadVertices[i + (dynamicRenderData.quadCount * 4)].setTexTilingFactor(tilingfactor); // TODO int ipv float?
         }
 
         dynamicRenderData.quadIndexCount += 6;

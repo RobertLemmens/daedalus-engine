@@ -12,6 +12,15 @@ public class QuadVertex {
     private Vec4f color;
     private Vec2f texCoords;
     private float texIndex;
+    private float texTilingFactor;
+
+    public float getTexTilingFactor() {
+        return texTilingFactor;
+    }
+
+    public void setTexTilingFactor(float texTilingFactor) {
+        this.texTilingFactor = texTilingFactor;
+    }
 
     public QuadVertex(){}
 
@@ -49,7 +58,9 @@ public class QuadVertex {
 
     public float[] asFloat() {
         return new float[] {
-                position.r(), position.g(), position.b(), position.a(), texCoords.x(), texCoords.y(), texIndex
+                position.r(), position.g(), position.b(), position.a(),
+                texCoords.x(), texCoords.y(),
+                texIndex, texTilingFactor
         };
 
     }

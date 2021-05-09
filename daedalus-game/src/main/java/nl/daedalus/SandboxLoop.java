@@ -66,10 +66,10 @@ public class SandboxLoop implements DaedalusLoop {
 //            }
 //        }
 
-        Renderer.drawQuad(-0.3f, 0.0f, Mat4f.scale(new Vec3f(0.5f)), 45, checkerboard);
-        Renderer.drawQuad(0.4f, 0.0f, Mat4f.scale(new Vec3f(0.5f)), 45, checkerboard);
-        Renderer.drawQuad(0.8f, 0.5f, Mat4f.scale(new Vec3f(0.5f)), 45, checkerboard);
-        Renderer.drawQuad(new Vec3f(0.2f, 0.7f, 1.0f), Mat4f.scale(new Vec3f(0.5f)), 45, transparent);
+        Renderer.drawQuad(-0.3f, 0.0f, Mat4f.scale(new Vec3f(0.5f)), 45, checkerboard, 2);
+        Renderer.drawQuad(0.4f, 0.0f, Mat4f.scale(new Vec3f(0.5f)), 45, checkerboard, 1);
+        Renderer.drawQuad(0.8f, 0.5f, Mat4f.scale(new Vec3f(0.5f)), 45, checkerboard, 1);
+        Renderer.drawQuad(new Vec3f(0.2f, 0.7f, 1.0f), Mat4f.scale(new Vec3f(0.5f)), 45, transparent, 1);
 
         Renderer.end();
     }
