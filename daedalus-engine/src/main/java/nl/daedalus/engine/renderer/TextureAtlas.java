@@ -4,7 +4,9 @@ import nl.daedalus.engine.math.Vec2f;
 import nl.daedalus.engine.renderer.Texture;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class TextureAtlas {
 
@@ -13,11 +15,11 @@ public class TextureAtlas {
 
     public SubTexture[][] subTextures;
 
-    public List<SubTexture> combinedTextures;
+    public Map<String, SubTexture> combinedTextures;
 
 
     public TextureAtlas(Texture texture, Vec2f cellSize) {
-        combinedTextures = new ArrayList<>();
+        combinedTextures = new HashMap<>();
         this.texture = texture;
         this.cellSize = cellSize;
         int width = texture.getWidth();
@@ -32,12 +34,12 @@ public class TextureAtlas {
         }
     }
 
-    public void addCombined(Vec2f spriteSize, Vec2f textureStart) {
-       combinedTextures.add(SubTexture.fromCoords(texture, textureStart, cellSize, spriteSize));
+    public void addCombined(String name, Vec2f spriteSize, Vec2f textureStart) {
+       combinedTextures.put(name, SubTexture.fromCoords(texture, textureStart, cellSize, spriteSize));
     }
 
-    public SubTexture getCombined(int index) {
-        return combinedTextures.get(index);
+    public SubTexture getCombined(String name) {
+        return combinedTextures.get(name);
     }
 
 

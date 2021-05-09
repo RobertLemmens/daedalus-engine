@@ -102,8 +102,8 @@ public final class Renderer {
         backend.drawIndexed(dynamicRenderData.getVertexArray(), dynamicRenderData.quadIndexCount);
     }
 
-    public static void drawQuad(float x, float y, Mat4f scale, SubTexture subTexture, int tilingFactor, Vec4f tint) {
-        drawQuad(new Vec3f(x, y, 0.0f), scale, subTexture, tilingFactor, tint);
+    public static void drawQuad(float x, float y, float xScale, float yScale, SubTexture subTexture, int tilingFactor, Vec4f tint) {
+        drawQuad(new Vec3f(x, y, 0.0f), Mat4f.scale(new Vec3f(xScale, yScale, 1.0f)), subTexture, tilingFactor, tint);
     }
 
     /**
@@ -174,8 +174,8 @@ public final class Renderer {
         drawQuad(transform, dynamicRenderData.defaultTexCoords, textureIndex, tilingFactor, tint);
     }
 
-    public static void drawQuad(float x, float y, Mat4f scale, Texture texture, int tilingFactor, Vec4f tint) {
-        drawQuad(new Vec3f(x, y, 0.0f), scale, texture, tilingFactor, tint);
+    public static void drawQuad(float x, float y, float xScale, float yScale, Texture texture, int tilingFactor, Vec4f tint) {
+        drawQuad(new Vec3f(x, y, 0.0f), Mat4f.scale(new Vec3f(xScale, yScale, 1.0f)), texture, tilingFactor, tint);
     }
 
     /**
@@ -208,8 +208,8 @@ public final class Renderer {
         drawQuad(transform, dynamicRenderData.defaultTexCoords, textureIndex, tilingFactor, tint);
     }
 
-    public static void drawRotatedQuad(float x, float y, float rotation, Mat4f scale, Vec4f color) {
-       drawRotatedQuad(new Vec3f(x, y, 1.0f), rotation, scale, color);
+    public static void drawRotatedQuad(float x, float y, float rotation, float xScale, float yScale, Vec4f color) {
+       drawRotatedQuad(new Vec3f(x, y, 1.0f), rotation, Mat4f.scale(new Vec3f(xScale, yScale, 1.0f)), color);
     }
 
     /**
@@ -229,8 +229,8 @@ public final class Renderer {
         drawQuad(transform, dynamicRenderData.defaultTexCoords, textureIndex, tilingFactor, color);
     }
 
-    public static void drawQuad(float x, float y, Mat4f scale, Vec4f color) {
-        drawQuad(new Vec3f(x, y, 1.0f), scale, color);
+    public static void drawQuad(float x, float y, float xScale, float yScale, Vec4f color) {
+        drawQuad(new Vec3f(x, y, 1.0f), Mat4f.scale(new Vec3f(xScale, yScale, 1.0f)), color);
     }
 
     /**
