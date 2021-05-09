@@ -1,9 +1,9 @@
 package nl.daedalus.engine.scene.components;
 
-public abstract class Component {
-    public abstract String getName();
+import nl.daedalus.engine.scene.Updatable;
 
-    public abstract void onUpdate(float dt);
+public abstract class Component implements Updatable {
+    public abstract String getName();
 
     public boolean equals(Component other) {
         if (other == null) return false;

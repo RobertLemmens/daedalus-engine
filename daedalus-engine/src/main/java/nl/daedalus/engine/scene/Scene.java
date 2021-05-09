@@ -5,7 +5,7 @@ import nl.daedalus.engine.renderer.Renderer;
 import nl.daedalus.engine.scene.components.SpriteComponent;
 import nl.daedalus.engine.scene.components.TransformComponent;
 
-public class Scene {
+public class Scene implements Updatable {
 
     public Scene() {
     }
