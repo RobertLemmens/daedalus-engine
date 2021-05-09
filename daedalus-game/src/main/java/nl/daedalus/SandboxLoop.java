@@ -16,6 +16,7 @@ public class SandboxLoop implements DaedalusLoop {
     private VertexArray vertexArray;
     private Shader shader;
     private Texture checkerboard;
+    private Texture transparent;
 
     @Override
     public void onInit() {
@@ -24,6 +25,7 @@ public class SandboxLoop implements DaedalusLoop {
 
         shader = Shader.create("shaders/ColorShader.glsl");
         checkerboard = Texture.create("textures/Checkerboard.png");
+        transparent = Texture.create("textures/transparent.png");
 
         // Bind vertex array
         vertexArray = VertexArray.create();
@@ -55,18 +57,19 @@ public class SandboxLoop implements DaedalusLoop {
 
         Renderer.begin(cameraController.getCamera());
 
-        for(int y = 0; y < 20; y++) {
-            for (int x = 0; x < 20; x++) {
-                Vec3f position = new Vec3f(x * 0.11f, y * 0.11f, 0f);
-                Mat4f transform = Mat4f.translate(position).multiply(Mat4f.scale(new Vec3f(0.1f)));
-                Renderer.drawQuad(vertexArray, shader, transform);
-            }
-        }
+        //TODO fix color rendering
+//        for(int y = 0; y < 20; y++) {
+//            for (int x = 0; x < 20; x++) {
+//                Vec3f position = new Vec3f(x * 0.11f, y * 0.11f, 0f);
+//                Mat4f transform = Mat4f.translate(position).multiply(Mat4f.scale(new Vec3f(0.1f)));
+//                Renderer.drawQuad(vertexArray, shader, transform);
+//            }
+//        }
 
         Renderer.drawQuad(-0.3f, 0.0f, Mat4f.scale(new Vec3f(0.5f)), 45, checkerboard);
         Renderer.drawQuad(0.4f, 0.0f, Mat4f.scale(new Vec3f(0.5f)), 45, checkerboard);
         Renderer.drawQuad(0.8f, 0.5f, Mat4f.scale(new Vec3f(0.5f)), 45, checkerboard);
-        Renderer.drawQuad(new Vec3f(0.2f, 0.7f, 1.0f), Mat4f.scale(new Vec3f(0.5f)), 45, checkerboard);
+        Renderer.drawQuad(new Vec3f(0.2f, 0.7f, 1.0f), Mat4f.scale(new Vec3f(0.5f)), 45, transparent);
 
         Renderer.end();
     }

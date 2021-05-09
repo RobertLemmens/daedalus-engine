@@ -118,12 +118,10 @@ public final class Renderer {
 
     public static void begin(OrthographicCamera orthographicCamera) {
         viewProjectionMatrix = orthographicCamera.getViewProjectionMatrix();
-//        renderData.getShader().uploadUniformMat4("u_view_projection", viewProjectionMatrix);
 
         dynamicRenderData.getShader().bind();
         dynamicRenderData.getShader().uploadUniformMat4("u_view_projection", viewProjectionMatrix);
 
-        ///--- dynamic draw ---///
         dynamicRenderData.quadIndexCount = 0;
         dynamicRenderData.quadCount = 0;
 
@@ -132,7 +130,6 @@ public final class Renderer {
 
     public static void end() {
         // draw everything
-        dynamicRenderData.getShader().bind();
         float[] allVerts = new float[0];
         for (int i = 0; i < dynamicRenderData.quadCount * 4; i++) { // gather all the floats
             allVerts = QuadVertex.concatAll(allVerts, dynamicRenderData.quadVertices[i].asFloat());
@@ -200,14 +197,14 @@ public final class Renderer {
 //        backend.drawIndexed(renderData.getVertexArray());
 //    }
 
-    public static void drawQuad(VertexArray vertexArray, Shader shader, Mat4f transform) {
-        shader.bind();
-        shader.uploadUniformMat4("u_view_projection", viewProjectionMatrix);
-        shader.uploadUniformMat4("u_transform", transform);
-
-        vertexArray.bind();
-        backend.drawIndexed(vertexArray, 0);
-    }
+//    public static void drawQuad(VertexArray vertexArray, Shader shader, Mat4f transform) {
+//        shader.bind();
+//        shader.uploadUniformMat4("u_view_projection", viewProjectionMatrix);
+//        shader.uploadUniformMat4("u_transform", transform);
+//
+//        vertexArray.bind();
+//        backend.drawIndexed(vertexArray, 0);
+//    }
 
     public static void onWindowResize(WindowResizeEvent e) {
         backend.setViewport(0, 0, e.getWidth(), e.getHeight());

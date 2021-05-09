@@ -54,6 +54,7 @@ public class OpenGLTexture extends Texture {
             e.printStackTrace();
         }
 
+        stbi_set_flip_vertically_on_load(true);
         ByteBuffer fileData = stbi_load_from_memory(fileBuffer, width, height, channels, 0);
         if (fileData == null) {
             DaedalusLogger.error("Could not load texture from file");
@@ -64,10 +65,11 @@ public class OpenGLTexture extends Texture {
 
         int internalFormat = 0;
         int dataFormat = 0;
-        if (channels.get() == 3) {
+        int channelCount = channels.get();
+        if (channelCount == 3) {
             internalFormat = GL_RGB8;
             dataFormat = GL_RGB;
-        } else if (channels.get() == 4) {
+        } else if (channelCount == 4) {
             internalFormat = GL_RGBA8;
             dataFormat = GL_RGBA;
         } else {
