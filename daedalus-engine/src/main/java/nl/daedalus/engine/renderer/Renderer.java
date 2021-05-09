@@ -6,11 +6,14 @@ import nl.daedalus.engine.math.Vec2f;
 import nl.daedalus.engine.math.Vec3f;
 import nl.daedalus.engine.math.Vec4f;
 import nl.daedalus.engine.renderer.camera.OrthographicCamera;
+import nl.daedalus.engine.renderer.texture.SubTexture;
+import nl.daedalus.engine.renderer.texture.Texture;
 
 public final class Renderer {
 
     private static RendererBackend backend;
     private static RenderData dynamicRenderData;
+    private static Vec4f noTint = new Vec4f(1.0f, 1.0f, 1.0f, 1.0f);
 
     public static void init() {
         backend = RendererBackend.create();
@@ -102,8 +105,12 @@ public final class Renderer {
         backend.drawIndexed(dynamicRenderData.getVertexArray(), dynamicRenderData.quadIndexCount);
     }
 
+    public static void drawQuad(float x, float y, float xScale, float yScale, SubTexture subTexture) {
+        drawQuad(x, y, xScale, yScale, subTexture, 1, noTint);
+    }
+
     public static void drawQuad(float x, float y, float xScale, float yScale, SubTexture subTexture, int tilingFactor, Vec4f tint) {
-        drawQuad(new Vec3f(x, y, 0.0f), Mat4f.scale(new Vec3f(xScale, yScale, 1.0f)), subTexture, tilingFactor, tint);
+        drawQuad(new Vec3f(x, y, 0.1f), Mat4f.scale(new Vec3f(xScale, yScale, 1.0f)), subTexture, tilingFactor, tint);
     }
 
     /**
@@ -117,7 +124,10 @@ public final class Renderer {
      */
     public static void drawQuad(Vec3f position, Mat4f scale, SubTexture subTexture, int tilingFactor, Vec4f tint) {
         Mat4f transform = Mat4f.translate(position).multiply(scale);
+        drawQuad(transform, subTexture, tilingFactor, tint);
+    }
 
+    public static void drawQuad(Mat4f transform, SubTexture subTexture, int tilingFactor, Vec4f tint) {
         Texture texture = subTexture.getTexture();
         Vec2f[] texCoords = subTexture.getTexCoords();
 
@@ -137,6 +147,7 @@ public final class Renderer {
         }
 
         drawQuad(transform, texCoords, textureIndex, tilingFactor, tint);
+
     }
 
     public static void drawRotatedQuad(float x, float y, float rotation, Mat4f scale, Texture texture, int tilingFactor, Vec4f tint) {
@@ -209,7 +220,7 @@ public final class Renderer {
     }
 
     public static void drawRotatedQuad(float x, float y, float rotation, float xScale, float yScale, Vec4f color) {
-       drawRotatedQuad(new Vec3f(x, y, 1.0f), rotation, Mat4f.scale(new Vec3f(xScale, yScale, 1.0f)), color);
+       drawRotatedQuad(new Vec3f(x, y, 0.0f), rotation, Mat4f.scale(new Vec3f(xScale, yScale, 1.0f)), color);
     }
 
     /**
@@ -230,7 +241,7 @@ public final class Renderer {
     }
 
     public static void drawQuad(float x, float y, float xScale, float yScale, Vec4f color) {
-        drawQuad(new Vec3f(x, y, 1.0f), Mat4f.scale(new Vec3f(xScale, yScale, 1.0f)), color);
+        drawQuad(new Vec3f(x, y, 0.0f), Mat4f.scale(new Vec3f(xScale, yScale, 1.0f)), color);
     }
 
     /**

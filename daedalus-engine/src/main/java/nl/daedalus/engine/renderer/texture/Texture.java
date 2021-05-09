@@ -1,4 +1,4 @@
-package nl.daedalus.engine.renderer;
+package nl.daedalus.engine.renderer.texture;
 
 import nl.daedalus.engine.core.Constants;
 import nl.daedalus.engine.renderer.opengl.OpenGLTexture;

@@ -1,14 +1,13 @@
 package nl.daedalus.engine.renderer.opengl;
 
 import nl.daedalus.engine.core.DaedalusLogger;
-import nl.daedalus.engine.renderer.Texture;
+import nl.daedalus.engine.renderer.texture.Texture;
 import nl.daedalus.engine.util.FileUtils;
 import org.lwjgl.BufferUtils;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
-import java.nio.charset.StandardCharsets;
 
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 import static org.lwjgl.opengl.GL45.*;

@@ -1,11 +1,8 @@
-package nl.daedalus.engine.renderer;
+package nl.daedalus.engine.renderer.texture;
 
 import nl.daedalus.engine.math.Vec2f;
-import nl.daedalus.engine.renderer.Texture;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class TextureAtlas {

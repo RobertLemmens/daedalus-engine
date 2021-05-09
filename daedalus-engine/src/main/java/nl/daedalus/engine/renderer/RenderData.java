@@ -2,6 +2,7 @@ package nl.daedalus.engine.renderer;
 
 import nl.daedalus.engine.math.Vec2f;
 import nl.daedalus.engine.math.Vec4f;
+import nl.daedalus.engine.renderer.texture.Texture;
 
 public class RenderData {
 
