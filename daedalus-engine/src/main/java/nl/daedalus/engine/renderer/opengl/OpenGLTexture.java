@@ -20,8 +20,29 @@ public class OpenGLTexture extends Texture {
     private int id;
     private int width;
     private int height;
+    private String path;
+    private int dataFormat;
+    private int internalFormat;
+
+    public OpenGLTexture(int width, int height) {
+        this.width = width;
+        this.height = height;
+
+        internalFormat = GL_RGBA8;
+        dataFormat = GL_RGBA;
+
+        id = glCreateTextures(GL_TEXTURE_2D);
+        glTextureStorage2D(id, 1, internalFormat, width, height);
+
+        glTextureParameteri(id, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTextureParameteri(id, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+        glTextureParameteri(id, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTextureParameteri(id, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    }
 
     public OpenGLTexture(String path) {
+        this.path = path;
         IntBuffer width = BufferUtils.createIntBuffer(1);
         IntBuffer height = BufferUtils.createIntBuffer(1);
         IntBuffer channels = BufferUtils.createIntBuffer(1);
@@ -72,6 +93,21 @@ public class OpenGLTexture extends Texture {
     @Override
     public int getHeight() {
         return this.height;
+    }
+
+    @Override
+    public boolean equals(Texture other) {
+        return this.path.equals(other.getPath());
+    }
+
+    @Override
+    public String getPath() {
+        return this.path;
+    }
+
+    @Override
+    public void setData(int data) {
+       glTextureSubImage2D(id, 0, 0, 0, width, height, dataFormat, GL_UNSIGNED_BYTE, new int[]{1,1,1,1});
     }
 
     @Override

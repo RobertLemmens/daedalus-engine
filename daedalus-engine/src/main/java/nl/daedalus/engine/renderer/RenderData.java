@@ -7,10 +7,14 @@ public class RenderData {
     public final static int maxQuads = 10000;
     public final static int maxVertices = maxQuads * 4;
     public final static int maxIndices = maxQuads * 6;
+    public final static int maxTextures = 32;
 
     public QuadVertex[] quadVertices = new QuadVertex[maxVertices];
     public int quadIndexCount = 0;
     public int quadCount = 0;
+    public int textureIndex = 0;
+
+    public Texture[] textures = new Texture[maxTextures];
 
 
     private VertexArray vertexArray;

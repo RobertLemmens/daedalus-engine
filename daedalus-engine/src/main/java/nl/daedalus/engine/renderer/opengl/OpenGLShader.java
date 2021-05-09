@@ -135,4 +135,10 @@ public class OpenGLShader extends Shader {
         transform.fillBuffer(buffer);
         glUniformMatrix4fv(location, false, buffer);
     }
+
+    @Override
+    public void uploadIntArray(String name, int[] arr) { //TODO convert to buffer?
+        int location = glGetUniformLocation(programID, name);
+        glUniform1iv(location, arr);
+    }
 }

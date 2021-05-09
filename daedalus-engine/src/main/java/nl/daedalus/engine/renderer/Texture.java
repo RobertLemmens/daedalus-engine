@@ -13,8 +13,19 @@ public abstract class Texture {
         };
     }
 
+    public static Texture create(int width, int height) {
+        return switch (Constants.BACKEND) {
+            case NONE -> null;
+            case OPENGL -> new OpenGLTexture(width, height);
+            case VULKAN -> null;
+        };
+    }
     public abstract int getWidth();
     public abstract int getHeight();
+    public abstract boolean equals(Texture other);
+    public abstract String getPath();
+
+    public abstract void setData(int data);
 
     public abstract void bind(int slot);
     public abstract void unbind();

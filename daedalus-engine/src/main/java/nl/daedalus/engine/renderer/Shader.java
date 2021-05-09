@@ -35,5 +35,6 @@ public abstract class Shader {
     public abstract void bind();
     public abstract void unbind();
     public abstract void uploadUniformMat4(String name, Mat4f transform);
+    public abstract void uploadIntArray(String name, int[] arr);
 
 }

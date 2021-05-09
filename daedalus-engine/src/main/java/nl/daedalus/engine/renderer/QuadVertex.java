@@ -11,6 +11,7 @@ public class QuadVertex {
     private Vec4f position; // X, Y en Z voor depth testing
     private Vec4f color;
     private Vec2f texCoords;
+    private float texIndex;
 
     public QuadVertex(){}
 
@@ -34,13 +35,21 @@ public class QuadVertex {
         return texCoords;
     }
 
+    public float getTexIndex() {
+        return texIndex;
+    }
+
+    public void setTexIndex(float texIndex) {
+        this.texIndex = texIndex;
+    }
+
     public void setTexCoords(Vec2f texCoords) {
         this.texCoords = texCoords;
     }
 
     public float[] asFloat() {
         return new float[] {
-                position.r(), position.g(), position.b(), position.a(), texCoords.x(), texCoords.y()
+                position.r(), position.g(), position.b(), position.a(), texCoords.x(), texCoords.y(), texIndex
         };
 
     }

@@ -28,10 +28,10 @@ layout(location = 0) out vec4 a_color;
 in vec2 v_texcoords;
 in float v_texindex;
 
-uniform sampler2D u_texture;
+uniform sampler2D u_textures[32];
 
 void main()
 {
-    a_color = texture(u_texture, v_texcoords);
+    a_color = texture(u_textures[int(v_texindex)], v_texcoords);
 }
 // FS_END
