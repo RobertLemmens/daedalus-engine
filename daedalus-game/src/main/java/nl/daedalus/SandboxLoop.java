@@ -20,6 +20,8 @@ public class SandboxLoop implements DaedalusLoop {
     private SubTexture grassTileBottomMid;
     private SubTexture grassTileBottomRight;
 
+    private TextureAtlas urbanAtlas;
+
 
 
     private Vec4f noTint = new Vec4f(1.0f, 1.0f, 1.0f, 1.0f);
@@ -35,6 +37,9 @@ public class SandboxLoop implements DaedalusLoop {
         grassTileBottomMid = SubTexture.fromCoords(urbanTileMap, new Vec2f(1,15) , new Vec2f(16.0f, 16.0f), new Vec2f(1.0f, 1.0f));
         grassTileBottomRight = SubTexture.fromCoords(urbanTileMap, new Vec2f(2,15) , new Vec2f(16.0f, 16.0f), new Vec2f(1.0f, 1.0f));
         grassTileBottomLeft = SubTexture.fromCoords(urbanTileMap, new Vec2f(0,15) , new Vec2f(16.0f, 16.0f), new Vec2f(1.0f, 1.0f));
+        urbanAtlas = new TextureAtlas(urbanTileMap, new Vec2f(16.0f, 16.0f));
+        urbanAtlas.addCombined(new Vec2f(1.0f, 2.0f), new Vec2f(16,5));
+
     }
 
     float rotation = 0.0f;
@@ -63,7 +68,11 @@ public class SandboxLoop implements DaedalusLoop {
 
         Renderer.drawQuad(-1.1f, 0.0f, Mat4f.scale(new Vec3f(1.0f)), grassTileBottomLeft, 1, noTint);
         Renderer.drawQuad(0.0f, 0.0f, Mat4f.scale(new Vec3f(1.0f)), grassTileBottomMid, 1, noTint);
+        Renderer.drawQuad(0.0f, 1.1f, Mat4f.scale(new Vec3f(1.0f)), urbanAtlas.subTextures[15][1], 1, noTint);
         Renderer.drawQuad(1.1f, 0.0f, Mat4f.scale(new Vec3f(1.0f)), grassTileBottomRight, 1, noTint);
+
+        Renderer.drawQuad(0.5f, 3.0f, Mat4f.scale(new Vec3f(1.0f)), urbanAtlas.getCombined(0), 1, noTint);
+//        Renderer.drawQuad(0.5f, 3.0f, Mat4f.scale(new Vec3f(1.0f)), urbanAtlas.subTextures[5][16], 1, noTint);
 
         Renderer.end();
     }
