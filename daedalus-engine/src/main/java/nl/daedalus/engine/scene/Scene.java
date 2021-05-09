@@ -12,6 +12,7 @@ public class Scene {
 
     public void onUpdate(float dt) {
         for(Entity e : EntityRegistry.getGroup(TransformComponent.class, SpriteComponent.class)) {
+            e.getComponents().forEach(c -> c.onUpdate(dt));
             Renderer.drawQuad(e.getComponent(TransformComponent.class).getTransform(),
                     e.getComponent(SpriteComponent.class).getTexture(), 1, new Vec4f(1.0f));
         }

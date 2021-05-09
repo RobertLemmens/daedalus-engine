@@ -30,7 +30,6 @@ public class TransformComponent extends Component{
 
     public void setPosition(int x, int y, int z) {
         position = new Vec3f(x, y, 1.0f);
-        onUpdate(0);
     }
 
     public void setScale(int xScale, int yScale) {
