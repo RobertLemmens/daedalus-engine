@@ -28,7 +28,7 @@ public class TransformComponent extends Component{
         this.transform = transform;
     }
 
-    public void setPosition(int x, int y, int z) {
+    public void setPosition(float x, float y, float z) {
         position = new Vec3f(x, y, 1.0f);
     }
 

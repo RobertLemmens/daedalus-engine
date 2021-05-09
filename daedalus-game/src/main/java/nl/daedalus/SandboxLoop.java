@@ -51,7 +51,7 @@ public class SandboxLoop implements DaedalusLoop {
         testScene = new Scene();
         Entity player = testScene.createEntity("player");
         TransformComponent transformComponent = new TransformComponent(new Mat4f());
-        transformComponent.setPosition(0, 0, 1);
+        transformComponent.setPosition(6, 0.5f, 1);
         player.add(transformComponent);
         player.add(new SpriteComponent(urbanAtlas.subTextures[5][25]));
     }
@@ -64,8 +64,8 @@ public class SandboxLoop implements DaedalusLoop {
 
         Renderer.begin(cameraController.getCamera());
 
+        // Draw some quads with color, some rotating.
         rotation += dt * 50;
-
         for(float y = -5.0f; y < 5.0f; y+= 0.5f) {
             for (float x = -5.0f; x < 5.0f; x+= 0.5f) {
                 Vec4f color = new Vec4f((x + 5.0f) / 10.0f, 0.4f, (y + 5.0f) / 10.0f, 1.0f);
@@ -80,13 +80,17 @@ public class SandboxLoop implements DaedalusLoop {
 
         // Drawing transparent textures is still somewhat tricky (render ordering and Z matters)
         Renderer.drawQuad(-0.3f, 0.0f, 20.0f, 20.0f, checkerboard, 10, noTint);
+        Renderer.drawQuad(6.0f, 0.0f, 1.0f, 1.0f, grassTileBottomLeft, 1, noTint);
+        Renderer.drawQuad(7.0f, 0.0f, 1.0f, 1.0f, grassTileBottomMid, 1, noTint);
+        Renderer.drawQuad(8.0f, 0.0f, 1.0f, 1.0f, grassTileBottomRight, 1, noTint);
+        Renderer.drawQuad(6.0f, 1.0f, 1.0f, 1.0f, urbanAtlas.subTextures[16][0], 1, noTint);
+        Renderer.drawQuad(7.0f, 1.0f, 1.0f, 1.0f, urbanAtlas.subTextures[16][1], 1, noTint);
+        Renderer.drawQuad(8.0f, 1.0f, 1.0f, 1.0f, urbanAtlas.subTextures[16][2], 1, noTint);
+        Renderer.drawQuad(6.0f, 2.0f, 1.0f, 1.0f, urbanAtlas.subTextures[17][0], 1, noTint);
+        Renderer.drawQuad(7.0f, 2.0f, 1.0f, 1.0f, urbanAtlas.subTextures[17][1], 1, noTint);
+        Renderer.drawQuad(8.0f, 2.0f, 1.0f, 1.0f, urbanAtlas.subTextures[17][2], 1, noTint);
 
-        Renderer.drawQuad(-1.1f, 0.0f, 1.0f, 1.0f, grassTileBottomLeft, 1, noTint);
-        Renderer.drawQuad(0.0f, 0.0f, 1.0f, 1.0f, grassTileBottomMid, 1, noTint);
-        Renderer.drawQuad(0.0f, 1.1f, 1.0f, 1.0f, urbanAtlas.subTextures[16][1], 1, noTint);
-        Renderer.drawQuad(1.1f, 0.0f, 1.0f, 1.0f, grassTileBottomRight, 1, noTint);
-
-        Renderer.drawQuad(new Vec3f(0.5f, 1.0f, 0.9f), Mat4f.scale(new Vec3f(1.0f, 2.0f, 1.0f)), urbanAtlas.getCombined("tree"), 1, noTint);
+        Renderer.drawQuad(new Vec3f(7.0f, 1.5f, 0.9f), Mat4f.scale(new Vec3f(1.0f, 2.0f, 1.0f)), urbanAtlas.getCombined("tree"), 1, noTint);
         testScene.onUpdate(dt);
 
         Renderer.end();
