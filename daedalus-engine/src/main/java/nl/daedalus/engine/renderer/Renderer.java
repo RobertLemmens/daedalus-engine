@@ -39,19 +39,19 @@ public final class Renderer {
 //                -0.5f,  0.5f, 0.0f, 1.0f, 0.0f, 1.0f
 //        };
 
-        float[] vertices = QuadVertex.concatAll(v1.asFloat(), v2.asFloat(), v3.asFloat(), v4.asFloat());
-
-        VertexBuffer vertexBuffer = VertexBuffer.create(vertices);
-        BufferLayout layout = new BufferLayout();
-        layout.addElement("a_position", Shader.Datatype.FLOAT4);
-        layout.addElement("a_texcoord", Shader.Datatype.FLOAT2);
-        vertexBuffer.setLayout(layout);
-        renderData.getVertexArray().addVertexBuffer(vertexBuffer);
-
-        int[] squareIndices = {0,1,2,2,3,0};
-        IndexBuffer squareIndexBuffer = IndexBuffer.create(squareIndices);
-        renderData.getVertexArray().addIndexBuffer(squareIndexBuffer);
-        renderData.setShader(Shader.create("shaders/Texture.glsl"));
+//        float[] vertices = QuadVertex.concatAll(v1.asFloat(), v2.asFloat(), v3.asFloat(), v4.asFloat());
+//
+//        VertexBuffer vertexBuffer = VertexBuffer.create(vertices);
+//        BufferLayout layout = new BufferLayout();
+//        layout.addElement("a_position", Shader.Datatype.FLOAT4);
+//        layout.addElement("a_texcoord", Shader.Datatype.FLOAT2);
+//        vertexBuffer.setLayout(layout);
+//        renderData.getVertexArray().addVertexBuffer(vertexBuffer);
+//
+//        int[] squareIndices = {0,1,2,2,3,0};
+//        IndexBuffer squareIndexBuffer = IndexBuffer.create(squareIndices);
+//        renderData.getVertexArray().addIndexBuffer(squareIndexBuffer);
+//        renderData.setShader(Shader.create("shaders/Texture.glsl"));
 
 
         /// ------------ dynamic test --------------- ///
@@ -60,15 +60,17 @@ public final class Renderer {
         dynamicRenderData.setVertexBuffer(VertexBuffer.create(RenderData.maxVertices *
                 (
                         Shader.Datatype.FLOAT4.getSize() +
-                        Shader.Datatype.FLOAT4.getSize() +
-                        Shader.Datatype.FLOAT2.getSize() +
-                        Shader.Datatype.FLOAT.getSize()
+                                Shader.Datatype.FLOAT4.getSize() +
+                                Shader.Datatype.FLOAT2.getSize() +
+                                Shader.Datatype.FLOAT.getSize() +
+                                Shader.Datatype.FLOAT.getSize()
                 )));
         BufferLayout dynamicLayout = new BufferLayout();
         dynamicLayout.addElement("a_position", Shader.Datatype.FLOAT4);
         dynamicLayout.addElement("a_texcoord", Shader.Datatype.FLOAT2);
         dynamicLayout.addElement("a_texindex", Shader.Datatype.FLOAT);
         dynamicLayout.addElement("a_textilingfactor", Shader.Datatype.FLOAT);
+        dynamicLayout.addElement("a_color", Shader.Datatype.FLOAT4);
         dynamicRenderData.getVertexBuffer().setLayout(dynamicLayout);
         dynamicRenderData.getVertexArray().addVertexBuffer(dynamicRenderData.getVertexBuffer());
 
@@ -146,11 +148,11 @@ public final class Renderer {
         backend.drawIndexed(dynamicRenderData.getVertexArray(), dynamicRenderData.quadIndexCount);
     }
 
-    public static void drawQuad(float x, float y, Mat4f scale, float rotation, Texture texture, int tilingFactor) {
-        drawQuad(new Vec3f(x, y, 0.0f), scale, rotation, texture, tilingFactor);
+    public static void drawQuad(float x, float y, Mat4f scale, float rotation, Texture texture, int tilingFactor, Vec4f tint) {
+        drawQuad(new Vec3f(x, y, 0.0f), scale, rotation, texture, tilingFactor, tint);
     }
 
-    public static void drawQuad(Vec3f position, Mat4f scale, float rotation, Texture texture, int tilingFactor) {
+    public static void drawQuad(Vec3f position, Mat4f scale, float rotation, Texture texture, int tilingFactor, Vec4f tint) {
         Mat4f transform = Mat4f.translate(position).multiply(scale);
 
         Vec2f[] texCoords = {
@@ -161,7 +163,6 @@ public final class Renderer {
         };
 
         int textureIndex = 0; // we beginnen op 1 met echte textures. 0 is zwart.
-        int tilingfactor = tilingFactor;
 
         for (int i = 0; i < dynamicRenderData.textureIndex; i++) {
             // if texture al bestaat, zet index daarop.
@@ -182,7 +183,8 @@ public final class Renderer {
             dynamicRenderData.quadVertices[i + (dynamicRenderData.quadCount * 4)].setPosition(transform.multiply(dynamicRenderData.quadVertexPositions[i]));
             dynamicRenderData.quadVertices[i + (dynamicRenderData.quadCount * 4)].setTexCoords(texCoords[i]);
             dynamicRenderData.quadVertices[i + (dynamicRenderData.quadCount * 4)].setTexIndex(textureIndex); // TODO int ipv float?
-            dynamicRenderData.quadVertices[i + (dynamicRenderData.quadCount * 4)].setTexTilingFactor(tilingfactor); // TODO int ipv float?
+            dynamicRenderData.quadVertices[i + (dynamicRenderData.quadCount * 4)].setTexTilingFactor(tilingFactor); // TODO int ipv float?
+            dynamicRenderData.quadVertices[i + (dynamicRenderData.quadCount * 4)].setColor(tint);
         }
 
         dynamicRenderData.quadIndexCount += 6;
@@ -190,24 +192,33 @@ public final class Renderer {
 
     }
 
-//    public static void drawQuad(Vec3f position, Mat4f scale, float rotation, Vec4f color) {
-//        renderData.getShader().bind();
-//        texture.bind(0);
-//        Mat4f transform = Mat4f.translate(position).multiply(scale);
-//        renderData.getShader().uploadUniformMat4("u_transform", transform);
-//
-//        renderData.getVertexArray().bind();
-//        backend.drawIndexed(renderData.getVertexArray());
-//    }
+    public static void drawQuad(Vec3f position, Mat4f scale, Vec4f color) {
+        Mat4f transform = Mat4f.translate(position).multiply(scale);
 
-//    public static void drawQuad(VertexArray vertexArray, Shader shader, Mat4f transform) {
-//        shader.bind();
-//        shader.uploadUniformMat4("u_view_projection", viewProjectionMatrix);
-//        shader.uploadUniformMat4("u_transform", transform);
-//
-//        vertexArray.bind();
-//        backend.drawIndexed(vertexArray, 0);
-//    }
+        Vec2f[] texCoords = {
+                new Vec2f(0.0f, 0.0f),
+                new Vec2f(1.0f, 0.0f),
+                new Vec2f(1.0f, 1.0f),
+                new Vec2f(0.0f, 1.0f)
+        };
+
+       int textureIndex = 0;
+       int tilingFactor = 1;
+
+        // create some quads
+        for (int i = 0 ; i < 4; i++) {
+            QuadVertex vertex = new QuadVertex(); //TODO maken we teveel garbage hier? Misschien is een default initialized quadvertex array een beter idee.
+            dynamicRenderData.quadVertices[i + (dynamicRenderData.quadCount * 4)] = vertex; // Init
+            dynamicRenderData.quadVertices[i + (dynamicRenderData.quadCount * 4)].setPosition(transform.multiply(dynamicRenderData.quadVertexPositions[i]));
+            dynamicRenderData.quadVertices[i + (dynamicRenderData.quadCount * 4)].setTexCoords(texCoords[i]);
+            dynamicRenderData.quadVertices[i + (dynamicRenderData.quadCount * 4)].setTexIndex(textureIndex); // TODO int ipv float?
+            dynamicRenderData.quadVertices[i + (dynamicRenderData.quadCount * 4)].setTexTilingFactor(tilingFactor); // TODO int ipv float?
+            dynamicRenderData.quadVertices[i + (dynamicRenderData.quadCount * 4)].setColor(color);
+        }
+
+        dynamicRenderData.quadIndexCount += 6;
+        dynamicRenderData.quadCount++;
+    }
 
     public static void onWindowResize(WindowResizeEvent e) {
         backend.setViewport(0, 0, e.getWidth(), e.getHeight());

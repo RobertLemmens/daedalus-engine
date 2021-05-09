@@ -78,6 +78,11 @@ public class OrthographicCameraController extends CameraController{
         recalculateView();
     }
 
+    public void setZoomLevel(int level) {
+        zoomLevel = level;
+        recalculateView();
+    }
+
     public OrthographicCamera getCamera() {
         return this.camera;
     }

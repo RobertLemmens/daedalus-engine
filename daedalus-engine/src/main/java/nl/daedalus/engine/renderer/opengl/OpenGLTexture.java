@@ -109,7 +109,7 @@ public class OpenGLTexture extends Texture {
 
     @Override
     public void setData(int data) {
-       glTextureSubImage2D(id, 0, 0, 0, width, height, dataFormat, GL_UNSIGNED_BYTE, new int[]{1,1,1,1});
+       glTextureSubImage2D(id, 0, 0, 0, width, height, dataFormat, GL_UNSIGNED_BYTE, new int[]{data});
     }
 
     @Override

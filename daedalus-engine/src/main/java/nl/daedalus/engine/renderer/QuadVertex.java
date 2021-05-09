@@ -60,7 +60,8 @@ public class QuadVertex {
         return new float[] {
                 position.r(), position.g(), position.b(), position.a(),
                 texCoords.x(), texCoords.y(),
-                texIndex, texTilingFactor
+                texIndex, texTilingFactor,
+                color.r(), color.g(), color.b(), color.a()
         };
 
     }
