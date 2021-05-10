@@ -5,6 +5,7 @@ import nl.daedalus.engine.math.Mat4f;
 import nl.daedalus.engine.math.Vec2f;
 import nl.daedalus.engine.math.Vec3f;
 import nl.daedalus.engine.math.Vec4f;
+import nl.daedalus.engine.renderer.camera.Camera;
 import nl.daedalus.engine.renderer.camera.OrthographicCamera;
 import nl.daedalus.engine.renderer.texture.SubTexture;
 import nl.daedalus.engine.renderer.texture.Texture;
@@ -76,6 +77,17 @@ public final class Renderer {
 
     public static void clear() {
         backend.clear();
+    }
+
+    public static void begin(Camera camera, Mat4f tansform) {
+        Mat4f viewProjection = camera.getProjection().multiply(tansform.invert());
+        dynamicRenderData.getShader().bind();
+        dynamicRenderData.getShader().uploadUniformMat4("u_view_projection", viewProjection);
+
+        // Reset renderdata
+        dynamicRenderData.quadIndexCount = 0;
+        dynamicRenderData.quadCount = 0;
+        dynamicRenderData.textureIndex = 1;
     }
 
     public static void begin(OrthographicCamera orthographicCamera) {

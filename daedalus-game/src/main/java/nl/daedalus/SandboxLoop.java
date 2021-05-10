@@ -3,101 +3,88 @@ package nl.daedalus;
 import nl.daedalus.engine.core.Constants;
 import nl.daedalus.engine.core.DaedalusLoop;
 import nl.daedalus.engine.events.Event;
+import nl.daedalus.engine.events.WindowResizeEvent;
 import nl.daedalus.engine.math.Mat4f;
 import nl.daedalus.engine.math.Vec2f;
-import nl.daedalus.engine.math.Vec3f;
-import nl.daedalus.engine.math.Vec4f;
-import nl.daedalus.engine.renderer.*;
-import nl.daedalus.engine.renderer.camera.OrthographicCameraController;
-import nl.daedalus.engine.renderer.texture.SubTexture;
+import nl.daedalus.engine.renderer.FrameBuffer;
 import nl.daedalus.engine.renderer.texture.Texture;
 import nl.daedalus.engine.renderer.texture.TextureAtlas;
 import nl.daedalus.engine.scene.Entity;
 import nl.daedalus.engine.scene.Scene;
+import nl.daedalus.engine.scene.components.CameraComponent;
+import nl.daedalus.engine.scene.components.Component;
 import nl.daedalus.engine.scene.components.SpriteComponent;
 import nl.daedalus.engine.scene.components.TransformComponent;
 
 
 public class SandboxLoop implements DaedalusLoop {
 
-    private OrthographicCameraController cameraController;
-    private Texture checkerboard;
+
+    // Scene is part of the ECS. This is an opinionated way of using the engine.
+    private Scene testScene;
+
+    // CustomScene is more hands on, do whatever you want. It shows the basics of interacting with the engine how you see fit.
+    private CustomScene customScene;
+
     private Texture urbanTileMap;
-
-    private SubTexture grassTileBottomLeft;
-    private SubTexture grassTileBottomMid;
-    private SubTexture grassTileBottomRight;
-
     private TextureAtlas urbanAtlas;
 
-    private Vec4f noTint = new Vec4f(1.0f, 1.0f, 1.0f, 1.0f);
-    private Vec4f blueTint = new Vec4f(0.0f, 0.0f, 0.9f, 1.0f);
+    private int windowWidth;
+    private int windowHeight;
 
-    Scene testScene;
+    private FrameBuffer frameBuffer;
 
     @Override
     public void onInit() {
-        cameraController = new OrthographicCameraController((float)Constants.WINDOW_WIDTH / (float)Constants.WINDOW_HEIGHT, true);
-        cameraController.setZoomLevel(5);
+        frameBuffer = FrameBuffer.create(new Vec2f(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT));
+        windowWidth = Constants.WINDOW_WIDTH;
+        windowHeight = Constants.WINDOW_HEIGHT;
 
-        checkerboard = Texture.create("textures/Checkerboard.png");
         urbanTileMap = Texture.create("textures/tilemaps/urban/tilemap_packed.png");
         urbanAtlas = new TextureAtlas(urbanTileMap, new Vec2f(16.0f, 16.0f));
         urbanAtlas.addCombined("tree",new Vec2f(1.0f, 2.0f), new Vec2f(16,5));
-        grassTileBottomMid = SubTexture.fromCoords(urbanTileMap, new Vec2f(1,15) , new Vec2f(16.0f, 16.0f), new Vec2f(1.0f, 1.0f));
-        grassTileBottomRight = SubTexture.fromCoords(urbanTileMap, new Vec2f(2,15) , new Vec2f(16.0f, 16.0f), new Vec2f(1.0f, 1.0f));
-        grassTileBottomLeft = SubTexture.fromCoords(urbanTileMap, new Vec2f(0,15) , new Vec2f(16.0f, 16.0f), new Vec2f(1.0f, 1.0f));
+
+        customScene = new CustomScene(urbanAtlas, urbanTileMap);
 
         testScene = new Scene();
         Entity player = testScene.createEntity("player");
         TransformComponent transformComponent = new TransformComponent(new Mat4f());
-        transformComponent.setPosition(6, 0.5f, 1);
+        transformComponent.setPosition(0.0f, 0.0f, 1);
         player.add(transformComponent);
         player.add(new SpriteComponent(urbanAtlas.subTextures[5][25]));
+
+        Entity camera = testScene.createEntity("camera");
+        camera.add(new CameraComponent());
+        camera.add(new TransformComponent(new Mat4f()));
+        testScene.onViewportResize(windowWidth, windowHeight);
     }
 
-    float rotation = 0.0f;
     @Override
     public void onUpdate(float dt) {
+        customScene.onUpdate(dt);
+        if (windowWidth > 0.0f && windowHeight > 0.0f &&
+                (frameBuffer.getSize().x() != windowWidth || frameBuffer.getSize().y() != windowHeight)) {
 
-        cameraController.onUpdate(dt);
+            frameBuffer.resize(new Vec2f(windowWidth, windowHeight));
 
-        Renderer.begin(cameraController.getCamera());
-
-        // Draw some quads with color, some rotating.
-        rotation += dt * 50;
-        for(float y = -5.0f; y < 5.0f; y+= 0.5f) {
-            for (float x = -5.0f; x < 5.0f; x+= 0.5f) {
-                Vec4f color = new Vec4f((x + 5.0f) / 10.0f, 0.4f, (y + 5.0f) / 10.0f, 1.0f);
-                if ((int)x % 2 == 0) {
-                    // draw rotated quad
-                    Renderer.drawRotatedQuad(x, y, rotation, 0.45f, 0.45f, color);
-                } else {
-                    Renderer.drawQuad(x, y, 0.45f, 0.45f, color);
-                }
-            }
+            testScene.onViewportResize(windowWidth, windowHeight);
         }
 
-        // Drawing transparent textures is still somewhat tricky (render ordering and Z matters)
-        Renderer.drawQuad(-0.3f, 0.0f, 20.0f, 20.0f, checkerboard, 10, noTint);
-        Renderer.drawQuad(6.0f, 0.0f, 1.0f, 1.0f, grassTileBottomLeft, 1, noTint);
-        Renderer.drawQuad(7.0f, 0.0f, 1.0f, 1.0f, grassTileBottomMid, 1, noTint);
-        Renderer.drawQuad(8.0f, 0.0f, 1.0f, 1.0f, grassTileBottomRight, 1, noTint);
-        Renderer.drawQuad(6.0f, 1.0f, 1.0f, 1.0f, urbanAtlas.subTextures[16][0], 1, noTint);
-        Renderer.drawQuad(7.0f, 1.0f, 1.0f, 1.0f, urbanAtlas.subTextures[16][1], 1, noTint);
-        Renderer.drawQuad(8.0f, 1.0f, 1.0f, 1.0f, urbanAtlas.subTextures[16][2], 1, noTint);
-        Renderer.drawQuad(6.0f, 2.0f, 1.0f, 1.0f, urbanAtlas.subTextures[17][0], 1, noTint);
-        Renderer.drawQuad(7.0f, 2.0f, 1.0f, 1.0f, urbanAtlas.subTextures[17][1], 1, noTint);
-        Renderer.drawQuad(8.0f, 2.0f, 1.0f, 1.0f, urbanAtlas.subTextures[17][2], 1, noTint);
 
-        Renderer.drawQuad(new Vec3f(7.0f, 1.5f, 0.9f), Mat4f.scale(new Vec3f(1.0f, 2.0f, 1.0f)), urbanAtlas.getCombined("tree"), 1, noTint);
         testScene.onUpdate(dt);
-
-        Renderer.end();
     }
 
     @Override
     public void onEvent(Event e) {
-        cameraController.onEvent(e);
+        if (e.getType() == Event.EventType.WindowResized) {
+            onWindowResized((WindowResizeEvent) e);
+        }
+        customScene.onEvent(e);
+        testScene.onEvent(e);
+    }
+
+    public void onWindowResized(WindowResizeEvent e) {
+        windowWidth = e.getWidth();
+        windowHeight = e.getHeight();
     }
 }
