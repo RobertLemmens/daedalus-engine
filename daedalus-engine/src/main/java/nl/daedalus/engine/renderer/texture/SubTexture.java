@@ -35,4 +35,5 @@ public class SubTexture {
     public void setTexCoords(Vec2f[] texCoords) {
         this.texCoords = texCoords;
     }
+
 }

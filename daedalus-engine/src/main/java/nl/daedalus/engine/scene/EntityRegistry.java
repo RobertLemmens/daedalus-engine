@@ -10,7 +10,7 @@ import java.util.Map;
 public class EntityRegistry {
 
     // Unique store for component classes. Every entity will store components of Class<?> in the same location
-    // which will help our lookup times when we start doing more advanced stuff with our simple ECS
+    // which will help our lookup times when we start doing more advanced stuff with our simple ECS and increase entity count
     // Lookups should always go through here. Unregistered components should not exist, which this make sure.
     private static Map<Class<?>, Integer> componentMap = new HashMap<>();
     private static Map<String, Entity> entityMap = new HashMap<>(); //TODO we will want something faster later on
@@ -46,7 +46,7 @@ public class EntityRegistry {
         }
         // we weten nu op welke indexes de components leven
         List<Entity> result = new ArrayList<>();
-        entityMap.forEach((k,v) -> {
+        entityMap.forEach((k,v) -> { //todo we will want something faster
             int counter = 0;
             for(int i = 0; i < indexes.length; i++) {
                 if (v.get(indexes[i]) != null)

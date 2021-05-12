@@ -17,7 +17,6 @@ public class BufferLayout {
     }
 
     public void addElement(String name, Shader.Datatype datatype, boolean normalize) {
-
         elements.add(new BufferElement(name, datatype, datatype.getSize(), stride, normalize));
         stride += datatype.getSize();
     }
