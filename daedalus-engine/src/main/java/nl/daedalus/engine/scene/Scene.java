@@ -6,6 +6,7 @@ import nl.daedalus.engine.math.Vec4f;
 import nl.daedalus.engine.renderer.Renderer;
 import nl.daedalus.engine.renderer.camera.Camera;
 import nl.daedalus.engine.renderer.camera.SceneCamera;
+import nl.daedalus.engine.renderer.texture.TileMap;
 import nl.daedalus.engine.scene.components.CameraComponent;
 import nl.daedalus.engine.scene.components.SpriteComponent;
 import nl.daedalus.engine.scene.components.TransformComponent;
@@ -14,6 +15,8 @@ public class Scene implements Updatable, EventProcessor {
 
     private int viewportWidth = 0;
     private int viewportHeight = 0;
+    private TileMap tileMap;
+    private boolean hasTileMap;
 
     public Scene() {
     }
@@ -30,6 +33,9 @@ public class Scene implements Updatable, EventProcessor {
         // Only update or render if we are actually looking at stuff
         if (mainCamera != null) {
             Renderer.begin(mainCamera, cameraTransform);
+            if (hasTileMap) {
+                tileMap.onRender();
+            }
             for(Entity e : EntityRegistry.getGroup(TransformComponent.class, SpriteComponent.class)) {
                 e.getComponents().forEach(c -> c.onUpdate(dt));
                 Renderer.drawQuad(e.getComponent(TransformComponent.class).getTransform(),
@@ -37,6 +43,14 @@ public class Scene implements Updatable, EventProcessor {
             }
             Renderer.end();
         }
+
+    }
+
+    public void setTileMap(TileMap tileMap) {
+        if (tileMap != null) {
+            hasTileMap = true;
+        }
+        this.tileMap = tileMap;
 
     }
 

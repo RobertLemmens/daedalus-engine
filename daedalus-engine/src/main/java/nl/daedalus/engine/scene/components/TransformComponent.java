@@ -29,7 +29,15 @@ public class TransformComponent extends Component{
     }
 
     public void setPosition(float x, float y, float z) {
-        position = new Vec3f(x, y, 1.0f);
+        position = new Vec3f(x, y, z);
+    }
+
+    public void setPosition(Vec3f vector) {
+        this.position = vector;
+    }
+
+    public Vec3f getPosition() {
+        return position;
     }
 
     public void setScale(int xScale, int yScale) {

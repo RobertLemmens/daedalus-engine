@@ -17,6 +17,11 @@ public class SceneCamera extends Camera{
         calculateProjection();
     }
 
+    public void setOrthographicSize(float size) {
+        this.orthographicSize = size;
+        calculateProjection();
+    }
+
     public void setViewportSize(int width, int height) {
         aspectRatio = (float) width / (float) height;
         calculateProjection();
