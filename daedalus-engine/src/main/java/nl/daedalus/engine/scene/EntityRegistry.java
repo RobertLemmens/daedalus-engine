@@ -35,6 +35,10 @@ public class EntityRegistry {
         return entity;
     }
 
+    public static void removeEntity(String name) {
+        entityMap.remove(name);
+    }
+
     public static Entity getEntity(String name) {
         return entityMap.get(name);
     }

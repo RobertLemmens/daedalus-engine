@@ -10,6 +10,7 @@ public class TransformComponent extends Component{
     private Mat4f transform;
     private Vec3f position = new Vec3f(1.0f);
     private Mat4f scale = new Mat4f();
+    private float rotation = 0;
 
     public TransformComponent(Mat4f transform) {
         this.transform = transform;
@@ -21,7 +22,15 @@ public class TransformComponent extends Component{
 
     @Override
     public void onUpdate(float dt) {
-        transform = Mat4f.translate(position).multiply(scale);
+        if (rotation == 0) {
+            transform = Mat4f.translate(position).multiply(scale);
+        } else {
+            transform = Mat4f.translate(position).multiply(Mat4f.rotate(rotation, new Vec3f(0.0f, 0.0f, 1.0f))).multiply(scale);
+        }
+    }
+
+    public void setRotation(float rotation) {
+        this.rotation = rotation;
     }
 
     public void setTransform(Mat4f transform) {

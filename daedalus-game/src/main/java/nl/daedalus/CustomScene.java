@@ -11,8 +11,8 @@ import nl.daedalus.engine.renderer.camera.OrthographicCameraController;
 import nl.daedalus.engine.renderer.texture.SubTexture;
 import nl.daedalus.engine.renderer.texture.Texture;
 import nl.daedalus.engine.renderer.texture.TextureAtlas;
-import nl.daedalus.engine.scene.EventProcessor;
-import nl.daedalus.engine.scene.Updatable;
+import nl.daedalus.engine.util.EventProcessor;
+import nl.daedalus.engine.util.Updatable;
 
 /**
  * This is a custom scene, that shows how to interact with the engine without the ECS

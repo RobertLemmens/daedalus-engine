@@ -10,6 +10,8 @@ import nl.daedalus.engine.renderer.texture.TileMap;
 import nl.daedalus.engine.scene.components.CameraComponent;
 import nl.daedalus.engine.scene.components.SpriteComponent;
 import nl.daedalus.engine.scene.components.TransformComponent;
+import nl.daedalus.engine.util.EventProcessor;
+import nl.daedalus.engine.util.Updatable;
 
 public class Scene implements Updatable, EventProcessor {
 

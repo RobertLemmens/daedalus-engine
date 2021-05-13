@@ -1,5 +1,7 @@
 package nl.daedalus.engine.core;
 
+import nl.daedalus.engine.events.KeyPressedEvent;
+import nl.daedalus.engine.events.MousePressedEvent;
 import nl.daedalus.engine.events.MouseScrolledEvent;
 import nl.daedalus.engine.events.WindowResizeEvent;
 import nl.daedalus.engine.math.Vec4f;
@@ -61,8 +63,19 @@ public abstract class DaedalusApplication {
 
         // Setup a key callback. It will be called every time a key is pressed, repeated or released.
         glfwSetKeyCallback(window, (window, key, scancode, action, mods) -> {
+            if (action == GLFW_PRESS) {
+                KeyPressedEvent e = new KeyPressedEvent(key);
+                daedalusLoop.onEvent(e);
+            }
             if ( key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE )
                 glfwSetWindowShouldClose(window, true); // We will detect this in the rendering loop
+        });
+
+        glfwSetMouseButtonCallback(window, (window, button, action, mod) -> {
+            if (action == GLFW_PRESS) {
+                MousePressedEvent e = new MousePressedEvent(button);
+                daedalusLoop.onEvent(e);
+            }
         });
 
         glfwSetScrollCallback(window, (window, xoffset, yoffset) -> {

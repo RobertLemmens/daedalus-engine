@@ -21,6 +21,14 @@ public class Entity {
         components = new Bag<>();
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
     public Entity add(Component component) { //TODO notify system nodig voor onAdd en onRemove, dan kunnen we hier interactie op krijgen
         addInternal(component);
         return this;

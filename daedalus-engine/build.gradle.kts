@@ -1,11 +1,21 @@
 plugins {
     java
+    `maven-publish`
 }
 
 group = "nl.codebulb"
 version = "1.0.0-SNAPSHOT"
 
+publishing {
+    publications {
+        create<MavenPublication>("daedalus-engine") {
+            from(components["java"]);
+        }
+    }
+}
+
 repositories {
+    mavenLocal()
     mavenCentral()
 }
 

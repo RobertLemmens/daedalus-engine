@@ -15,7 +15,6 @@ import nl.daedalus.engine.renderer.texture.TileMap;
 import nl.daedalus.engine.scene.Entity;
 import nl.daedalus.engine.scene.Scene;
 import nl.daedalus.engine.scene.components.*;
-import nl.daedalus.engine.util.InputProcessor;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -81,7 +80,7 @@ public class SandboxLoop implements DaedalusLoop {
         windowHeight = Constants.WINDOW_HEIGHT;
 
         urbanTileMap = Texture.create("textures/tilemaps/urban/tilemap_packed.png");
-        urbanAtlas = new TextureAtlas(urbanTileMap, new Vec2f(16.0f, 16.0f));
+        urbanAtlas = new TextureAtlas(urbanTileMap, new Vec2f(16.0f, 16.0f), 0);
         urbanAtlas.addCombined("tree",new Vec2f(1.0f, 2.0f), new Vec2f(16,5));
         tileMapMappings.put('w', urbanAtlas.subTextures[10][9]);
         tileMapMappings.put('g', urbanAtlas.subTextures[16][1]);
@@ -110,7 +109,7 @@ public class SandboxLoop implements DaedalusLoop {
         ecsScene.setTileMap(tileMap);
         Entity player = ecsScene.createEntity("player");
         TransformComponent transformComponent = new TransformComponent(new Mat4f());
-        transformComponent.setPosition(0.0f, 0.0f, 1);
+        transformComponent.setPosition(0.0f, 0.0f, 1f);
         player.add(transformComponent);
         player.add(new SpriteComponent(urbanAtlas.subTextures[5][24]));
 

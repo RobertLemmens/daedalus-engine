@@ -1,6 +1,6 @@
 package nl.daedalus.engine.scene.components;
 
-import nl.daedalus.engine.scene.Updatable;
+import nl.daedalus.engine.util.Updatable;
 
 public abstract class Component implements Updatable {
     public abstract String getName();
