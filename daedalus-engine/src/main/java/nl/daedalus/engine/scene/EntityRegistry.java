@@ -39,6 +39,10 @@ public class EntityRegistry {
         entityMap.remove(name);
     }
 
+    public static void removeAll() {
+        entityMap.clear();
+    }
+
     public static Entity getEntity(String name) {
         return entityMap.get(name);
     }

@@ -1,5 +1,6 @@
 package nl.daedalus.engine.math;
 
+
 import java.nio.FloatBuffer;
 
 public record Mat4f(Vec4f col1, Vec4f col2, Vec4f col3, Vec4f col4) {
@@ -223,7 +224,6 @@ public record Mat4f(Vec4f col1, Vec4f col2, Vec4f col3, Vec4f col4) {
     }
 
     public static Mat4f rotate(float angle, Vec3f rv) {
-
         float cos = (float) Math.cos(Math.toRadians(angle));
         float sin = (float) Math.sin(Math.toRadians(angle));
 

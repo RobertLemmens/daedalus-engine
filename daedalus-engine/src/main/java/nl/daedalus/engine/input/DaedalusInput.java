@@ -12,6 +12,11 @@ public class DaedalusInput {
         return state == GLFW_PRESS || state == GLFW_REPEAT;
     }
 
+    public static boolean isKeyReleased(int keycode) {
+        int state = glfwGetKey(DaedalusApplication.getWindow(), keycode);
+        return state == GLFW_RELEASE;
+    }
+
     public static boolean isMouseButtonPressed(int button) {
         int state = glfwGetMouseButton(DaedalusApplication.getWindow(), button);
         return state == GLFW_PRESS || state == GLFW_REPEAT;

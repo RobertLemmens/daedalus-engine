@@ -1,9 +1,6 @@
 package nl.daedalus.engine.core;
 
-import nl.daedalus.engine.events.KeyPressedEvent;
-import nl.daedalus.engine.events.MousePressedEvent;
-import nl.daedalus.engine.events.MouseScrolledEvent;
-import nl.daedalus.engine.events.WindowResizeEvent;
+import nl.daedalus.engine.events.*;
 import nl.daedalus.engine.math.Vec4f;
 import nl.daedalus.engine.renderer.*;
 import org.lwjgl.glfw.GLFWErrorCallback;
@@ -65,6 +62,10 @@ public abstract class DaedalusApplication {
         glfwSetKeyCallback(window, (window, key, scancode, action, mods) -> {
             if (action == GLFW_PRESS) {
                 KeyPressedEvent e = new KeyPressedEvent(key);
+                daedalusLoop.onEvent(e);
+            }
+            if (action == GLFW_RELEASE) {
+                KeyReleasedEvent e = new KeyReleasedEvent(key);
                 daedalusLoop.onEvent(e);
             }
             if ( key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE )
