@@ -7,5 +7,6 @@ public interface DaedalusLoop {
     void onInit();
     void onUpdate(float dt);
     void onEvent(Event e);
+    void onExit();
 
 }

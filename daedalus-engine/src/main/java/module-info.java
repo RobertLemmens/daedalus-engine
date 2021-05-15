@@ -4,4 +4,5 @@ module daedalus.daedalus.engine.main {
     requires org.slf4j;
     requires org.lwjgl.opengl;
     requires org.lwjgl.stb;
+    requires org.lwjgl.openal;
 }

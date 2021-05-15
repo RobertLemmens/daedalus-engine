@@ -1,6 +1,9 @@
 package nl.daedalus;
 
+import nl.daedalus.engine.audio.AudioManager;
+import nl.daedalus.engine.audio.Sound;
 import nl.daedalus.engine.core.Constants;
+import nl.daedalus.engine.core.DaedalusLogger;
 import nl.daedalus.engine.core.DaedalusLoop;
 import nl.daedalus.engine.events.Event;
 import nl.daedalus.engine.events.WindowResizeEvent;
@@ -38,6 +41,8 @@ public class SandboxLoop implements DaedalusLoop {
     private int windowHeight;
 
     private FrameBuffer frameBuffer;
+
+    private Sound laserSound; // test
 
     private Map<Character, SubTexture> tileMapMappings = new HashMap<>(); // TODO implement in TextureAtlas?
 
@@ -152,7 +157,12 @@ public class SandboxLoop implements DaedalusLoop {
         camera.add(cameraComponent);
         camera.add(new TransformComponent(new Mat4f()));
         ecsScene.onViewportResize(windowWidth, windowHeight);
+
+
+        //// initialize audio
+       laserSound = AudioManager.loadSound("pew", "audio/laser1.ogg");
     }
+
 
     @Override
     public void onUpdate(float dt) {
@@ -164,7 +174,7 @@ public class SandboxLoop implements DaedalusLoop {
             ecsScene.onViewportResize(windowWidth, windowHeight);
         }
 
-//        customScene.onUpdate(dt);
+        customScene.onUpdate(dt);
         ecsScene.onUpdate(dt);
     }
 
@@ -174,7 +184,16 @@ public class SandboxLoop implements DaedalusLoop {
             onWindowResized((WindowResizeEvent) e);
         }
         customScene.onEvent(e);
-        ecsScene.onEvent(e);
+//        ecsScene.onEvent(e);
+
+        if (e.getType() == Event.EventType.MouseButtonPressed) {
+            laserSound.play();
+        }
+    }
+
+    @Override
+    public void onExit() {
+        DaedalusLogger.warn("Closing application");
     }
 
     public void onWindowResized(WindowResizeEvent e) {

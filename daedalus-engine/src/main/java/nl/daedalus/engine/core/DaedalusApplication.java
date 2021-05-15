@@ -1,5 +1,6 @@
 package nl.daedalus.engine.core;
 
+import nl.daedalus.engine.audio.AudioManager;
 import nl.daedalus.engine.events.*;
 import nl.daedalus.engine.math.Vec4f;
 import nl.daedalus.engine.renderer.*;
@@ -101,7 +102,11 @@ public abstract class DaedalusApplication {
         rendererContext = RendererContext.create(window);
         rendererContext.setVsync(Constants.VSYNC);
 
-        // Init daedalus loop
+        // Init audio & Renderer
+        AudioManager.init();
+        Renderer.init();
+
+        // Init daedalus loop (Game)
         daedalusLoop.onInit();
 
         // Make the window visible
@@ -109,7 +114,7 @@ public abstract class DaedalusApplication {
     }
 
     private void loop() {
-        Renderer.init();
+
         Renderer.setClearColor(new Vec4f(0.2f, 0.2f, 0.2f, 0.0f));
 
         float lastTimeFrame = 0;
@@ -125,6 +130,9 @@ public abstract class DaedalusApplication {
             rendererContext.swapBuffers();
             glfwPollEvents();
         }
+        // Loop is done, we are closing the application, so now we cleanup
+        daedalusLoop.onExit();
+        AudioManager.disposeAll();
     }
 
     public static long getWindow() {
