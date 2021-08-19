@@ -84,17 +84,17 @@ public final class Renderer {
         dynamicRenderData.getShader().bind();
         dynamicRenderData.getShader().uploadUniformMat4("u_view_projection", viewProjection);
 
-        // Reset renderdata
-        dynamicRenderData.quadIndexCount = 0;
-        dynamicRenderData.quadCount = 0;
-        dynamicRenderData.textureIndex = 1;
+        resetRenderData();
     }
 
     public static void begin(OrthographicCamera orthographicCamera) {
         dynamicRenderData.getShader().bind();
         dynamicRenderData.getShader().uploadUniformMat4("u_view_projection", orthographicCamera.getViewProjectionMatrix());
 
-        // Reset renderdata
+        resetRenderData();
+    }
+
+    private static void resetRenderData() {
         dynamicRenderData.quadIndexCount = 0;
         dynamicRenderData.quadCount = 0;
         dynamicRenderData.textureIndex = 1;

@@ -47,6 +47,31 @@ public class EntityRegistry {
         return entityMap.get(name);
     }
 
+    /**
+     * Returns the components from the entities that contain the passed component class
+     * use getGroup() instead of view() to get the entities themself.
+     *
+     * @param className
+     * @param <T>
+     * @return
+     */
+    public static <T extends Component> List<T> view(Class<?> className) {
+        int index = getForComponent(className);
+        List<T> results = new ArrayList<>();
+        entityMap.forEach((k,v) -> {
+            T t = v.get(index);
+            if(t != null)
+                results.add(t);
+        });
+        return results;
+    }
+
+    /**
+     * Returns the entities that contain the passed component classes
+     *
+     * @param className
+     * @return
+     */
     public static List<Entity> getGroup(Class<?>... className) {
         int[] indexes = new int[className.length];
         for (int i = 0; i < className.length; i++) {

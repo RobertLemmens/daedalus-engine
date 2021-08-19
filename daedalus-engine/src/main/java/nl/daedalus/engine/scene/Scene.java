@@ -8,6 +8,7 @@ import nl.daedalus.engine.renderer.camera.Camera;
 import nl.daedalus.engine.renderer.camera.SceneCamera;
 import nl.daedalus.engine.renderer.texture.TileMap;
 import nl.daedalus.engine.scene.components.CameraComponent;
+import nl.daedalus.engine.scene.components.ScriptComponent;
 import nl.daedalus.engine.scene.components.SpriteComponent;
 import nl.daedalus.engine.scene.components.TransformComponent;
 import nl.daedalus.engine.util.EventProcessor;
@@ -25,6 +26,20 @@ public class Scene implements Updatable, EventProcessor {
 
     public void onUpdate(float dt) {
 
+//        EntityRegistry.view(ScriptComponent.class).forEach(script -> {
+//
+//        });
+        // Update scripts
+        EntityRegistry.getGroup(ScriptComponent.class).forEach(e -> {
+            ScriptComponent script = e.getComponent(ScriptComponent.class);
+            if (!script.isInitialized()) { // Temp, moveto OnScenePlay
+                script.init(); // Construct the class
+                script.setEntity(e); // Set the entity
+                script.onCreate(); // Call user script
+            }
+            script.onUpdate(dt);
+        });
+
         Camera mainCamera = null;
         Mat4f cameraTransform = null;
         for (Entity e : EntityRegistry.getGroup(TransformComponent.class, CameraComponent.class)) {
@@ -39,7 +54,7 @@ public class Scene implements Updatable, EventProcessor {
                 tileMap.onRender();
             }
             for(Entity e : EntityRegistry.getGroup(TransformComponent.class, SpriteComponent.class)) {
-                e.getComponents().forEach(c -> c.onUpdate(dt));
+                e.getComponents().forEach(c -> {if (!(c instanceof ScriptComponent)) c.onUpdate(dt);}); // TODO make this nicer
                 Renderer.drawQuad(e.getComponent(TransformComponent.class).getTransform(),
                         e.getComponent(SpriteComponent.class).getTexture(), 1, new Vec4f(1.0f));
             }

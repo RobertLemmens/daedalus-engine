@@ -143,6 +143,7 @@ public class SandboxLoop implements DaedalusLoop {
         transformComponent2.setPosition(1.0f, 0.0f, 1);
         player2.add(inputComponent);
         player2.add(transformComponent2);
+        player2.add(new ScriptComponent(PlayerController.class));
 
         player2.add(spriteComponent);
 
@@ -175,7 +176,7 @@ public class SandboxLoop implements DaedalusLoop {
         }
 
         customScene.onUpdate(dt);
-        ecsScene.onUpdate(dt);
+//        ecsScene.onUpdate(dt);
     }
 
     @Override

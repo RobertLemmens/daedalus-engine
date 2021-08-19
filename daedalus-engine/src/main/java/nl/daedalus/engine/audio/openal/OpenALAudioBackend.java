@@ -1,5 +1,6 @@
 package nl.daedalus.engine.audio.openal;
 
+import nl.daedalus.engine.audio.AudioBackend;
 import nl.daedalus.engine.core.DaedalusLogger;
 import nl.daedalus.engine.exceptions.InitException;
 import nl.daedalus.engine.math.Vec3f;
@@ -19,7 +20,7 @@ import static org.lwjgl.openal.ALC11.ALC_MONO_SOURCES;
 import static org.lwjgl.openal.ALC11.ALC_STEREO_SOURCES;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
-public class OpenALAudioBackend {
+public class OpenALAudioBackend extends AudioBackend {
 
     private long device;
     private long context;

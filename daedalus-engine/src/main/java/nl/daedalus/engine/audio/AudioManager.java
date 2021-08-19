@@ -1,11 +1,10 @@
 package nl.daedalus.engine.audio;
 
 import nl.daedalus.engine.audio.openal.AudioBuffer;
-import nl.daedalus.engine.audio.openal.OpenALAudioBackend;
 
 public class AudioManager {
 
-    private static OpenALAudioBackend audioBackend;
+    private static AudioBackend audioBackend;
 
     public static void init() {
         audioBackend = AudioBackend.create();
