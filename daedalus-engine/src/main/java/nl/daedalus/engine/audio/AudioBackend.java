@@ -26,6 +26,7 @@ public abstract class AudioBackend implements Disposable {
     public abstract void init();
     public abstract int createBuffer(String buffer);
     public abstract void createSource(String name, int bufferId);
+    public abstract void createSource(String name, int bufferId, boolean loop);
     public abstract AudioSource getSource(String name);
     public abstract List<AudioBuffer> getBuffers();
     public abstract Map<String, AudioSource> getSourceMap();

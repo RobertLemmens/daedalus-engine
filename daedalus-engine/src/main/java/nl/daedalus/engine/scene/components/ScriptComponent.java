@@ -2,10 +2,11 @@ package nl.daedalus.engine.scene.components;
 
 import nl.daedalus.engine.scene.Entity;
 import nl.daedalus.engine.scene.ScriptableEntity;
+import nl.daedalus.engine.util.Creatable;
 
 import java.lang.reflect.InvocationTargetException;
 
-public class ScriptComponent extends Component {
+public class ScriptComponent extends Component implements Creatable {
 
     private static final String NAME = "ScriptComponent";
 

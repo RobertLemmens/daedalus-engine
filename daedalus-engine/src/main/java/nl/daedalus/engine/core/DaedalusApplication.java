@@ -1,6 +1,7 @@
 package nl.daedalus.engine.core;
 
 import nl.daedalus.engine.audio.AudioManager;
+import nl.daedalus.engine.debug.DebugContext;
 import nl.daedalus.engine.events.*;
 import nl.daedalus.engine.math.Vec4f;
 import nl.daedalus.engine.renderer.*;
@@ -20,7 +21,7 @@ public abstract class DaedalusApplication {
     private RendererContext rendererContext;
 
     protected void run(DaedalusLoop daedalusLoop) {
-        DaedalusOptions daedalusOptions = new DaedalusOptions(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT, Constants.TITLE);
+        DaedalusOptions daedalusOptions = new DaedalusOptions(Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT, Constants.TITLE, Constants.VSYNC);
         run(daedalusLoop,daedalusOptions);
     }
 
@@ -94,13 +95,15 @@ public abstract class DaedalusApplication {
 
     private void init(DaedalusOptions options) {
         DaedalusLogger.info("Initializing Daedalus");
+        DaedalusLogger.info("Using " + Constants.AUDIO_BACKEND + " audio backend");
+        DaedalusLogger.info("Using " + Constants.BACKEND + " graphics backend");
 
         // Initialize window with glfw
         initGLFW(options);
 
         // init opengl context
         rendererContext = RendererContext.create(window);
-        rendererContext.setVsync(Constants.VSYNC);
+        rendererContext.setVsync(options.vsync());
 
         // Init audio & Renderer
         AudioManager.init();
@@ -132,6 +135,7 @@ public abstract class DaedalusApplication {
         }
         // Loop is done, we are closing the application, so now we cleanup
         daedalusLoop.onExit();
+        DebugContext.end();
         AudioManager.disposeAll();
     }
 

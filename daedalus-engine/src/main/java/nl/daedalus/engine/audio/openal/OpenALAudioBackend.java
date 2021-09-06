@@ -74,6 +74,12 @@ public class OpenALAudioBackend extends AudioBackend {
         sourceMap.put(name, source);
     }
 
+    public void createSource(String name, int bufferId, boolean loop) {
+        AudioSource source = new AudioSource(loop, false);
+        source.setBuffer(bufferId);
+        sourceMap.put(name, source);
+    }
+
     public AudioSource getSource(String name) {
         return sourceMap.get(name);
     }

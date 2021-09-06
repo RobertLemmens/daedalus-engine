@@ -1,11 +1,13 @@
 package nl.daedalus.engine.renderer;
 
+import nl.daedalus.engine.debug.DebugContext;
 import nl.daedalus.engine.math.Vec2f;
 import nl.daedalus.engine.math.Vec4f;
 import org.lwjgl.BufferUtils;
 
 import java.nio.FloatBuffer;
 import java.util.Arrays;
+import java.util.List;
 
 public class QuadVertex {
     private Vec4f position; // X, Y en Z voor depth testing
@@ -63,7 +65,15 @@ public class QuadVertex {
                 texIndex, texTilingFactor,
                 color.r(), color.g(), color.b(), color.a()
         };
+    }
 
+    public List<Float> asFloatList() {
+        return List.of(
+                position.r(), position.g(), position.b(), position.a(),
+                texCoords.x(), texCoords.y(),
+                texIndex, texTilingFactor,
+                color.r(), color.g(), color.b(), color.a()
+        );
     }
 
     public FloatBuffer toBuffer() {
@@ -75,6 +85,7 @@ public class QuadVertex {
     }
 
     public static float[] concatAll(float[] first, float[]... rest) {
+        long startTime = System.nanoTime();
         int totalLength = first.length;
         for (float[] array : rest) {
             totalLength += array.length;
@@ -85,6 +96,8 @@ public class QuadVertex {
             System.arraycopy(array, 0, result, offset, array.length);
             offset += array.length;
         }
+        long stopTime2 = System.nanoTime();
+        DebugContext.add("QuadVertex#concatAll()", startTime+1, stopTime2);
         return result;
     }
 }

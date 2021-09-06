@@ -1,5 +1,6 @@
 package nl.daedalus.engine.renderer.opengl;
 
+import nl.daedalus.engine.debug.DebugContext;
 import nl.daedalus.engine.math.Vec4f;
 import nl.daedalus.engine.renderer.RendererBackend;
 import nl.daedalus.engine.renderer.VertexArray;
@@ -11,14 +12,17 @@ public class OpenGLRendererBackend extends RendererBackend {
     public OpenGLRendererBackend() {
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        glEnable(GL_DEPTH_TEST);
+        glEnable(GL_DEPTH_TEST); //TODO depth testing introduceren, of render order altijd leidend laten zijn?
     }
 
     @Override
     public void drawIndexed(VertexArray vertexArray, int indexCount) {
+        long startTime = System.nanoTime();
         int count = indexCount == 0 ? vertexArray.getIndexBuffer().getCount() : indexCount;
         glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, 0);
         glBindTexture(GL_TEXTURE_2D, 0);
+        long stopTime = System.nanoTime();
+        DebugContext.add("drawIndexed()", startTime, stopTime);
     }
 
     @Override

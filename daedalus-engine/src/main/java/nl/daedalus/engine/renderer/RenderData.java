@@ -4,6 +4,9 @@ import nl.daedalus.engine.math.Vec2f;
 import nl.daedalus.engine.math.Vec4f;
 import nl.daedalus.engine.renderer.texture.Texture;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class RenderData {
 
     public final static int maxQuads = 10000;
@@ -12,6 +15,7 @@ public class RenderData {
     public final static int maxTextures = 32;
 
     public QuadVertex[] quadVertices = new QuadVertex[maxVertices];
+    public List<Float> quadVerticesAsFloats = new ArrayList<>();
     public int quadIndexCount = 0;
     public int quadCount = 0;
     public int textureIndex = 0;

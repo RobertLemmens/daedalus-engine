@@ -4,7 +4,7 @@ import nl.daedalus.engine.scene.components.Component;
 
 public abstract class ScriptableEntity {
 
-    private Entity entity;
+    protected Entity entity;
 
     public <T extends Component> T getComponent(Class<T> t) {
         return entity.getComponent(t);

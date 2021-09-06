@@ -11,6 +11,7 @@ import nl.daedalus.engine.scene.components.CameraComponent;
 import nl.daedalus.engine.scene.components.ScriptComponent;
 import nl.daedalus.engine.scene.components.SpriteComponent;
 import nl.daedalus.engine.scene.components.TransformComponent;
+import nl.daedalus.engine.util.Creatable;
 import nl.daedalus.engine.util.EventProcessor;
 import nl.daedalus.engine.util.Updatable;
 
@@ -20,23 +21,31 @@ public class Scene implements Updatable, EventProcessor {
     private int viewportHeight = 0;
     private TileMap tileMap;
     private boolean hasTileMap;
+    private boolean playing = false;
 
     public Scene() {
     }
 
-    public void onUpdate(float dt) {
+    public boolean isPlaying() {
+        return playing;
+    }
 
-//        EntityRegistry.view(ScriptComponent.class).forEach(script -> {
-//
-//        });
-        // Update scripts
+    public void beginPlay() {
+        // TODO Check voor alle Creatables?
         EntityRegistry.getGroup(ScriptComponent.class).forEach(e -> {
             ScriptComponent script = e.getComponent(ScriptComponent.class);
-            if (!script.isInitialized()) { // Temp, moveto OnScenePlay
+            if (!script.isInitialized()) {
                 script.init(); // Construct the class
                 script.setEntity(e); // Set the entity
                 script.onCreate(); // Call user script
             }
+        });
+        playing = true;
+    }
+
+    public void onUpdate(float dt) {
+        // Update scripts
+        EntityRegistry.view(ScriptComponent.class).forEach(script -> {
             script.onUpdate(dt);
         });
 
@@ -51,8 +60,9 @@ public class Scene implements Updatable, EventProcessor {
         if (mainCamera != null) {
             Renderer.begin(mainCamera, cameraTransform);
             if (hasTileMap) {
-                tileMap.onRender();
+                tileMap.onRender(); // TODO THIS IS SLOW AF
             }
+            // TODO order by <iets> ?
             for(Entity e : EntityRegistry.getGroup(TransformComponent.class, SpriteComponent.class)) {
                 e.getComponents().forEach(c -> {if (!(c instanceof ScriptComponent)) c.onUpdate(dt);}); // TODO make this nicer
                 Renderer.drawQuad(e.getComponent(TransformComponent.class).getTransform(),
@@ -64,17 +74,13 @@ public class Scene implements Updatable, EventProcessor {
     }
 
     public void setTileMap(TileMap tileMap) {
-        if (tileMap != null) {
-            hasTileMap = true;
-        }
         this.tileMap = tileMap;
-
+        this.hasTileMap = tileMap != null;
     }
 
     public Entity createEntity(String name) {
         return EntityRegistry.createEntity(name);
     }
-
 
     @Override
     public void onEvent(Event e) {

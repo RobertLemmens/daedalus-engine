@@ -1,6 +1,7 @@
 package nl.daedalus;
 
 import nl.daedalus.engine.audio.AudioManager;
+import nl.daedalus.engine.audio.Music;
 import nl.daedalus.engine.audio.Sound;
 import nl.daedalus.engine.core.Constants;
 import nl.daedalus.engine.core.DaedalusLogger;
@@ -112,12 +113,13 @@ public class SandboxLoop implements DaedalusLoop {
         // ECS example code
         ecsScene = new Scene();
         ecsScene.setTileMap(tileMap);
+
+
         Entity player = ecsScene.createEntity("player");
         TransformComponent transformComponent = new TransformComponent(new Mat4f());
-        transformComponent.setPosition(0.0f, 0.0f, 1f);
+        transformComponent.setPosition(0.0f, 1.5f, 0.1f);
         player.add(transformComponent);
         player.add(new SpriteComponent(urbanAtlas.subTextures[5][24]));
-
         SubTexture[][] playerSprites = { // todo make api nicer, dont want to keep working with arrays like this
                 {urbanAtlas.subTextures[0][23], urbanAtlas.subTextures[0][24], urbanAtlas.subTextures[0][25], urbanAtlas.subTextures[0][26]},
                 {urbanAtlas.subTextures[1][23], urbanAtlas.subTextures[1][24], urbanAtlas.subTextures[1][25], urbanAtlas.subTextures[1][26]},
@@ -140,7 +142,7 @@ public class SandboxLoop implements DaedalusLoop {
                 transformComponent2.setPosition(transformComponent2.getPosition().addX(0.1f));
             }
         });
-        transformComponent2.setPosition(1.0f, 0.0f, 1);
+        transformComponent2.setPosition(1.0f, 0.0f, 0.5f);
         player2.add(inputComponent);
         player2.add(transformComponent2);
         player2.add(new ScriptComponent(PlayerController.class));
@@ -159,9 +161,10 @@ public class SandboxLoop implements DaedalusLoop {
         camera.add(new TransformComponent(new Mat4f()));
         ecsScene.onViewportResize(windowWidth, windowHeight);
 
-
         //// initialize audio
-       laserSound = AudioManager.loadSound("pew", "audio/laser1.ogg");
+        laserSound = AudioManager.loadSound("pew", "audio/laser1.ogg");
+//        Music music = AudioManager.loadMusic("bg", "audio/Friends.ogg");
+//        music.play();
     }
 
 
@@ -175,8 +178,12 @@ public class SandboxLoop implements DaedalusLoop {
             ecsScene.onViewportResize(windowWidth, windowHeight);
         }
 
-        customScene.onUpdate(dt);
-//        ecsScene.onUpdate(dt);
+        if (!ecsScene.isPlaying()) {
+           ecsScene.beginPlay();
+        }
+
+//        customScene.onUpdate(dt);
+        ecsScene.onUpdate(dt);
     }
 
     @Override
@@ -184,8 +191,8 @@ public class SandboxLoop implements DaedalusLoop {
         if (e.getType() == Event.EventType.WindowResized) {
             onWindowResized((WindowResizeEvent) e);
         }
-        customScene.onEvent(e);
-//        ecsScene.onEvent(e);
+//        customScene.onEvent(e);
+        ecsScene.onEvent(e);
 
         if (e.getType() == Event.EventType.MouseButtonPressed) {
             laserSound.play();

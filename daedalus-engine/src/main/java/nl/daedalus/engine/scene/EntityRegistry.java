@@ -75,7 +75,7 @@ public class EntityRegistry {
     public static List<Entity> getGroup(Class<?>... className) {
         int[] indexes = new int[className.length];
         for (int i = 0; i < className.length; i++) {
-            indexes[0] = getForComponent(className[i]);
+            indexes[i] = getForComponent(className[i]);
         }
         // we weten nu op welke indexes de components leven
         List<Entity> result = new ArrayList<>();

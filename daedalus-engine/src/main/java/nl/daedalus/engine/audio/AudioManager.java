@@ -17,6 +17,13 @@ public class AudioManager {
         return audioBackend.getSource(name);
     }
 
+    public static Music loadMusic(String name, String path) {
+        int soundId = audioBackend.createBuffer(path);
+        audioBackend.createSource(name, soundId, true);
+        Sound sound = audioBackend.getSource(name);
+        return Music.fromSound(sound);
+    }
+
     public static void disposeAll() {
         audioBackend.getBuffers().forEach(AudioBuffer::dispose);
         audioBackend.getSourceMap().forEach((k,v) -> v.dispose());

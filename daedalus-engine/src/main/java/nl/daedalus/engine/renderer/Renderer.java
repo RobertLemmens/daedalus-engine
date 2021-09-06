@@ -1,5 +1,6 @@
 package nl.daedalus.engine.renderer;
 
+import nl.daedalus.engine.debug.DebugContext;
 import nl.daedalus.engine.events.WindowResizeEvent;
 import nl.daedalus.engine.math.Mat4f;
 import nl.daedalus.engine.math.Vec2f;
@@ -9,6 +10,11 @@ import nl.daedalus.engine.renderer.camera.Camera;
 import nl.daedalus.engine.renderer.camera.OrthographicCamera;
 import nl.daedalus.engine.renderer.texture.SubTexture;
 import nl.daedalus.engine.renderer.texture.Texture;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.DoubleStream;
 
 public final class Renderer {
 
@@ -98,13 +104,26 @@ public final class Renderer {
         dynamicRenderData.quadIndexCount = 0;
         dynamicRenderData.quadCount = 0;
         dynamicRenderData.textureIndex = 1;
+        dynamicRenderData.quadVerticesAsFloats = new ArrayList<>();
     }
 
     public static void end() {
+        long startTime = System.nanoTime();
+
         // draw everything
         float[] allVerts = new float[0];
-        for (int i = 0; i < dynamicRenderData.quadCount * 4; i++) { // gather all the floats
-            allVerts = QuadVertex.concatAll(allVerts, dynamicRenderData.quadVertices[i].asFloat());
+//        for (int i = 0; i < dynamicRenderData.quadCount * 4; i++) { // gather all the floats
+//            allVerts = QuadVertex.concatAll(allVerts, dynamicRenderData.quadVertices[i].asFloat()); // TODO SLOW AF
+//        }
+
+        // TODO somewhat faster, still looping twice, sucks
+//        List<Float> floats = new ArrayList<>();
+//        for (int i = 0; i < dynamicRenderData.quadCount * 4; i++) { // gather all the floats
+//            floats.addAll(dynamicRenderData.quadVertices[i].asFloatList());
+//        }
+        allVerts = new float[dynamicRenderData.quadVerticesAsFloats.size()];
+        for (int i = 0; i < allVerts.length; i++) {
+            allVerts[i] = dynamicRenderData.quadVerticesAsFloats.get(i);
         }
 
         // Bind the textures in their correct slots
@@ -115,6 +134,9 @@ public final class Renderer {
         dynamicRenderData.getVertexBuffer().setData(allVerts);
         dynamicRenderData.getVertexArray().bind();
         backend.drawIndexed(dynamicRenderData.getVertexArray(), dynamicRenderData.quadIndexCount);
+
+        long stopTime = System.nanoTime();
+        DebugContext.add("end()", startTime, stopTime);
     }
 
     public static void drawQuad(float x, float y, float xScale, float yScale, SubTexture subTexture) {
@@ -122,7 +144,7 @@ public final class Renderer {
     }
 
     public static void drawQuad(float x, float y, float xScale, float yScale, SubTexture subTexture, int tilingFactor, Vec4f tint) {
-        drawQuad(new Vec3f(x, y, 0.1f), Mat4f.scale(new Vec3f(xScale, yScale, 1.0f)), subTexture, tilingFactor, tint);
+        drawQuad(new Vec3f(x, y, 0.0f), Mat4f.scale(new Vec3f(xScale, yScale, 1.0f)), subTexture, tilingFactor, tint);
     }
 
     /**
@@ -283,6 +305,8 @@ public final class Renderer {
      * @param color
      */
     private static void drawQuad(Mat4f transform, Vec2f[] texCoords, int textureIndex, int tilingFactor, Vec4f color) {
+        long startTime = System.nanoTime();
+
         // create some quads
         for (int i = 0 ; i < 4; i++) {
             QuadVertex vertex = new QuadVertex();
@@ -292,10 +316,14 @@ public final class Renderer {
             dynamicRenderData.quadVertices[i + (dynamicRenderData.quadCount * 4)].setTexIndex(textureIndex); // TODO int ipv float?
             dynamicRenderData.quadVertices[i + (dynamicRenderData.quadCount * 4)].setTexTilingFactor(tilingFactor); // TODO int ipv float?
             dynamicRenderData.quadVertices[i + (dynamicRenderData.quadCount * 4)].setColor(color);
+            dynamicRenderData.quadVerticesAsFloats.addAll(dynamicRenderData.quadVertices[i + (dynamicRenderData.quadCount * 4)].asFloatList());
         }
 
         dynamicRenderData.quadIndexCount += 6;
         dynamicRenderData.quadCount++;
+
+        long stopTime = System.nanoTime();
+        DebugContext.add("drawQuad()", startTime, stopTime);
     }
 
     public static void onWindowResize(WindowResizeEvent e) {
