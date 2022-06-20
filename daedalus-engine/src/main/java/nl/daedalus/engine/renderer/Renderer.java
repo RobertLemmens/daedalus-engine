@@ -86,18 +86,26 @@ public final class Renderer {
     }
 
     public static void begin(Camera camera, Mat4f tansform) {
+        long startTime = System.nanoTime();
         Mat4f viewProjection = camera.getProjection().multiply(tansform.invert());
         dynamicRenderData.getShader().bind();
         dynamicRenderData.getShader().uploadUniformMat4("u_view_projection", viewProjection);
 
         resetRenderData();
+
+        long stopTime = System.nanoTime();
+        DebugContext.add("begin()", startTime, stopTime);
     }
 
     public static void begin(OrthographicCamera orthographicCamera) {
+        long startTime = System.nanoTime();
         dynamicRenderData.getShader().bind();
         dynamicRenderData.getShader().uploadUniformMat4("u_view_projection", orthographicCamera.getViewProjectionMatrix());
 
         resetRenderData();
+
+        long stopTime = System.nanoTime();
+        DebugContext.add("begin()", startTime, stopTime);
     }
 
     private static void resetRenderData() {
@@ -123,7 +131,7 @@ public final class Renderer {
 //        }
         allVerts = new float[dynamicRenderData.quadVerticesAsFloats.size()];
         for (int i = 0; i < allVerts.length; i++) {
-            allVerts[i] = dynamicRenderData.quadVerticesAsFloats.get(i);
+            allVerts[i] = dynamicRenderData.quadVerticesAsFloats.get(i); //TODO this is faster. Will have to monitor in future how this performs on big projects
         }
 
         // Bind the textures in their correct slots
@@ -305,8 +313,6 @@ public final class Renderer {
      * @param color
      */
     private static void drawQuad(Mat4f transform, Vec2f[] texCoords, int textureIndex, int tilingFactor, Vec4f color) {
-        long startTime = System.nanoTime();
-
         // create some quads
         for (int i = 0 ; i < 4; i++) {
             QuadVertex vertex = new QuadVertex();
@@ -321,9 +327,6 @@ public final class Renderer {
 
         dynamicRenderData.quadIndexCount += 6;
         dynamicRenderData.quadCount++;
-
-        long stopTime = System.nanoTime();
-        DebugContext.add("drawQuad()", startTime, stopTime);
     }
 
     public static void onWindowResize(WindowResizeEvent e) {

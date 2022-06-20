@@ -170,6 +170,7 @@ public class SandboxLoop implements DaedalusLoop {
 
     @Override
     public void onUpdate(float dt) {
+        DaedalusLogger.info("" + 1/dt);
         if (windowWidth > 0.0f && windowHeight > 0.0f && // todo move to engine?
                 (frameBuffer.getSize().x() != windowWidth || frameBuffer.getSize().y() != windowHeight)) {
 

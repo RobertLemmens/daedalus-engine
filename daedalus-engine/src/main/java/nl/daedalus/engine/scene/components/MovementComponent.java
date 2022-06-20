@@ -9,7 +9,7 @@ public class MovementComponent extends Component{
     private TransformComponent transformComponent;
     private Updatable updatable;
 
-    public MovementComponent(Updatable updatable) {
+    public MovementComponent(Updatable updatable) { //TODO not sure i like this yet. Do MORE in here. else this is useless, better use scriptcomponent instead if this is all we do
         this.updatable = updatable;
     }
 

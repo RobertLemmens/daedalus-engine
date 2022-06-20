@@ -1,9 +1,9 @@
 package nl.daedalus;
 
 import nl.daedalus.engine.core.DaedalusLogger;
-import nl.daedalus.engine.scene.ScriptableEntity;
+import nl.daedalus.engine.scene.Script;
 
-public class PlayerController extends ScriptableEntity {
+public class PlayerController extends Script {
 
     @Override
     public void onCreate() {

@@ -1,7 +1,7 @@
 package nl.daedalus.engine.scene.components;
 
 import nl.daedalus.engine.scene.Entity;
-import nl.daedalus.engine.scene.ScriptableEntity;
+import nl.daedalus.engine.scene.Script;
 import nl.daedalus.engine.util.Creatable;
 
 import java.lang.reflect.InvocationTargetException;
@@ -10,11 +10,11 @@ public class ScriptComponent extends Component implements Creatable {
 
     private static final String NAME = "ScriptComponent";
 
-    private ScriptableEntity scriptableEntity;
+    private Script script;
     private boolean initialized = false;
-    Class<? extends ScriptableEntity> t;
+    Class<? extends Script> t;
 
-    public ScriptComponent(Class<? extends ScriptableEntity> t) {
+    public ScriptComponent(Class<? extends Script> t) {
         this.t = t;
     }
 
@@ -23,14 +23,14 @@ public class ScriptComponent extends Component implements Creatable {
         return NAME;
     }
 
-    public <T extends ScriptableEntity> void init(T t) {
-        this.scriptableEntity = t;
+    public <T extends Script> void init(T t) {
+        this.script = t;
         initialized = true;
     }
 
-    public <T extends ScriptableEntity> void init()  {
+    public <T extends Script> void init()  {
         try {
-            this.scriptableEntity = t.getDeclaredConstructor().newInstance();
+            this.script = t.getDeclaredConstructor().newInstance();
         } catch (InstantiationException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
@@ -44,15 +44,15 @@ public class ScriptComponent extends Component implements Creatable {
     }
 
     public void setEntity(Entity entity) {
-        scriptableEntity.setEntity(entity);
+        script.setEntity(entity);
     }
 
     public void onCreate() {
-        scriptableEntity.onCreate();
+        script.onCreate();
     }
 
     public void onDispose() {
-        scriptableEntity.onDispose();
+        script.onDispose();
     }
 
     public boolean isInitialized() {
@@ -61,6 +61,6 @@ public class ScriptComponent extends Component implements Creatable {
 
     @Override
     public void onUpdate(float dt) {
-        scriptableEntity.onUpdate(dt);
+        script.onUpdate(dt);
     }
 }

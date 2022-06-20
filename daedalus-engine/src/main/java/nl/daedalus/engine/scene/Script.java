@@ -2,7 +2,7 @@ package nl.daedalus.engine.scene;
 
 import nl.daedalus.engine.scene.components.Component;
 
-public abstract class ScriptableEntity {
+public abstract class Script {
 
     protected Entity entity;
 
